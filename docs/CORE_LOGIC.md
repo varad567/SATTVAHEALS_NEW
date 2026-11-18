@@ -134,9 +134,9 @@ and ends when it drops below that for 300 ms **(tune)**.
 |---|---|---|
 | Hum length | hum end − hum start | ≥ 8 s (Bhramari), ≥ 6 s (Om) |
 | Inhale gap | time since previous hum ended | 3–6 s |
-| Steadiness | variation of loudness during the hum (std ÷ mean) | < 0.25 = steady |
+| Steadiness | variation of loudness during the hum (std ÷ mean, on amplitude not dB) | < 0.25 = steady |
 | Loudness | average dBFS during the hum | −35 to −15 dBFS |
-| Pitch | autocorrelation, 80–400 Hz | within 15% of the user's first-round pitch, not rising |
+| Pitch | normalised autocorrelation, 80–400 Hz, first strong peak (avoids octave errors), median per round | within 15% of the user's first-round pitch, not rising |
 
 **6.4 One tip at a time**, highest-priority problem first:
 1. Too loud → "Soften the hum — a gentle buzz you feel in your face is enough."
@@ -148,11 +148,16 @@ and ends when it drops below that for 300 ms **(tune)**.
 
 Tips coach **technique only** (CONTEXT §5). Tip wording lives in `src/content/humTips.json`.
 
+**6.4b Timer-only mode** (no mic, mic denied, or a noisy room — Flow 4): the user holds a button while
+humming. Only length and inhale are measured; tips are limited to "too short" / "short inhale" / "good";
+`steadyRounds` is saved as `null` so Progress never shows a fake "100% steady".
+
 **6.5 Session end**: after the set rounds (default 6). Ending early asks to confirm; the session
 is saved only if **≥ 2 rounds** were completed (Flow 4).
 
-**6.6 Saved per session**: `kind, rounds, avgHum, avgInhale, steadyRounds, before (1–5|null),
-after (1–5|null)`.
+**6.6 Saved per session**: `date, practiceId, kind, rounds, avgHum, avgInhale, steadyRounds (null in
+timer-only), before (1–5|null), after (1–5|null)`. Saving also marks the mantra card done. The mic is
+released the moment the session ends. All thresholds live in one object, `T` in `src/engine/hum/coach.js`.
 
 ## 7. Prana chat — routing rules (`api/chat.js` + `src/engine/chatRoute.js`)
 

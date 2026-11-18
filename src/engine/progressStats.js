@@ -6,7 +6,7 @@
  */
 const DAY = 86400000;
 const iso = (t) => new Date(t).toISOString().slice(0, 10);
-export const MOOD_GROUP = { okay: 'okay', anxious: 'busy', overthinking: 'busy', irritable: 'heated', stressed: 'heated', low: 'heavy', sluggish: 'heavy' };
+const MOOD_GROUP = { okay: 'okay', anxious: 'busy', overthinking: 'busy', irritable: 'heated', stressed: 'heated', low: 'heavy', sluggish: 'heavy' };
 const avg = (xs) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : null);
 
 export function progressStats({ checkins = [], completions = [], sessions = [], today }) {
@@ -23,13 +23,14 @@ export function progressStats({ checkins = [], completions = [], sessions = [], 
   }
 
   const inWeek = (s, w) => { const ago = (t0 - Date.parse(s.date)) / DAY; return ago >= w * 7 && ago < (w + 1) * 7; };
-  const rounds = sessions.reduce((n, s) => n + s.rounds, 0);
+  const analysed = sessions.filter((s) => s.steadyRounds != null); // timer-only sessions have no steadiness
+  const rounds = analysed.reduce((n, s) => n + s.rounds, 0);
   return {
     days: days.map((d) => ({ date: d, done: doneDays.has(d) })),
     daysPractised: days.filter((d) => doneDays.has(d)).length,
     moodGroups: days.map((d) => moodOf[d] ?? null),
     works,
     avgHumByWeek: [1, 0].map((w) => avg(sessions.filter((s) => inWeek(s, w)).map((s) => s.avgHum))), // [last week, this week]
-    steadyPct: rounds ? Math.round((sessions.reduce((n, s) => n + s.steadyRounds, 0) / rounds) * 100) : null,
+    steadyPct: rounds ? Math.round((analysed.reduce((n, s) => n + s.steadyRounds, 0) / rounds) * 100) : null,
   };
 }

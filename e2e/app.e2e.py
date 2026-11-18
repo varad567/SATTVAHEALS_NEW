@@ -32,10 +32,12 @@ def audit(page, w, name, errors):
     page.screenshot(path=f"e2e/shots/app-{w}-{name}.png", full_page=True)
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--no-sandbox"])
+    import os
+    browser = p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--no-sandbox",
+        "--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream", f"--use-file-for-fake-audio-capture={os.path.abspath('e2e/hum.wav')}"])
     for w, h in [(390, 844), (1280, 860)]:
         print(f"\n== {w}px ==")
-        page = browser.new_context(viewport={"width": w, "height": h}).new_page(); errors = []
+        ctx = browser.new_context(viewport={"width": w, "height": h}, permissions=["microphone"]); page = ctx.new_page(); errors = []
         page.on("console", lambda m: m.type == "error" and "Failed to load resource" not in m.text and errors.append(m.text))
         page.on("pageerror", lambda e: errors.append(str(e)))
         page.route("**/fonts.g*/**", lambda r: r.abort())
@@ -62,6 +64,27 @@ with sync_playwright() as p:
         check(page.get_by_role("dialog").is_visible(), f"{w}: support sheet opens")
         audit(page, w, "7-support", errors)
         page.keyboard.press("Escape")
+        # hum coach with the fake mic playing e2e/hum.wav (phone only — 45 s of audio)
+        if w < 500:
+            check(page.get_by_role("link", name="Hum with Prana").count() == 1, f"{w}: mantra card links to the hum coach")
+            page.goto(BASE + "/app/hum/man-bhramari-3")  # 3 rounds — matches the 3 hums in e2e/hum.wav
+            page.get_by_role("button", name="2", exact=True).click()
+            audit(page, w, "11-hum-setup", errors)
+            page.get_by_role("button", name="Start with the mic").click()
+            page.locator(".hum--dark").wait_for(timeout=10000)
+            page.locator(".prana__face--humming").wait_for(timeout=15000)
+            audit(page, w, "12-hum-live", errors)
+            page.get_by_role("heading", name="well done").wait_for(timeout=60000)
+            steady = page.locator(".stats div").nth(2).inner_text()
+            check(steady.startswith("3/3") or steady.startswith("2/") , f"{w}: real mic path detected steady hums ({steady!r})")
+            avg = float(page.locator(".stats b").first.inner_text().split()[0])
+            check(7.5 <= avg <= 10, f"{w}: average hum length close to the 9 s recording ({avg} s)")
+            page.get_by_role("button", name="4", exact=True).click()
+            check(page.get_by_text("more settled than before").count() == 1, f"{w}: before/after result shown")
+            audit(page, w, "13-hum-summary", errors)
+            page.get_by_role("button", name="Save and finish").click()
+            page.get_by_text("done").first.wait_for()
+            check(page.locator(".pcard--mantra.is-done").count() == 1, f"{w}: saving marks the mantra card done")
         page.get_by_role("link", name="Progress").click(); page.get_by_text("Your").first.wait_for()
         audit(page, w, "8-progress", errors)
         page.get_by_role("link", name="Profile").click(); page.get_by_text("Retake").wait_for()

@@ -1,16 +1,51 @@
 {
   "welcome": {
     "bubble": "Hi, I'm Prana. Once I know you, I'll take your shape.",
-    "title": ["Feel more settled,", "one small practice", "at a time."],
+    "title": [
+      "Feel more settled,",
+      "one small practice",
+      "at a time."
+    ],
     "age": "I'm 18 or older",
     "note": "Free to use · A wellbeing companion, not a substitute for professional care"
   },
-  "quizLines": ["Answer for how you usually are, not just today.", "Go with your first instinct.", "You're doing great — keep going.", "Halfway there. I'm starting to take shape!", "Almost there…", "Look — I'm becoming you."],
+  "quizLines": [
+    "Answer for how you usually are, not just today.",
+    "Go with your first instinct.",
+    "You're doing great — keep going.",
+    "Halfway there. I'm starting to take shape!",
+    "Almost there…",
+    "Look — I'm becoming you."
+  ],
   "prefs": {
     "name": "What should Prana call you?",
-    "minutes": { "q": "How much time do you have most days?", "o": [5, 10, 20] },
-    "diet": { "q": "How do you eat?", "o": ["vegetarian", "eggetarian", "non-vegetarian", "vegan", "jain"] },
-    "wake": { "q": "When do you usually wake up?", "o": ["05:30", "06:30", "07:30", "08:30"] }
+    "minutes": {
+      "q": "How much time do you have most days?",
+      "o": [
+        5,
+        10,
+        20
+      ]
+    },
+    "diet": {
+      "q": "How do you eat?",
+      "o": [
+        "vegetarian",
+        "eggetarian",
+        "non-vegetarian",
+        "vegan",
+        "jain"
+      ]
+    },
+    "wake": {
+      "q": "When do you usually wake up?",
+      "o": [
+        "05:30",
+        "06:30",
+        "07:30",
+        "08:30"
+      ]
+    }
   },
   "doshaBlurbs": {
     "vata": "Quick, creative and light on your feet. When out of balance, you may run on worry or restlessness.",
@@ -19,20 +54,85 @@
     "tridosha": "A rare, even balance of all three. Prana will follow how each day feels."
   },
   "moods": [
-    { "id": "anxious", "label": "Anxious", "say": "Anxious — thank you for telling me. We'll go gentle and grounding today." },
-    { "id": "overthinking", "label": "Overthinking", "say": "A busy mind. I'll pick things that give it one simple focus." },
-    { "id": "irritable", "label": "Irritable", "say": "Feeling heated. Let's cool and soften things today." },
-    { "id": "stressed", "label": "Stressed", "say": "Lots on your plate. We'll keep today short and steady." },
-    { "id": "low", "label": "Low", "say": "A low day is okay. Let's add a little warmth and lift." },
-    { "id": "sluggish", "label": "Sluggish", "say": "Heavy and slow — let's wake the body up gently." }
+    {
+      "id": "anxious",
+      "label": "Anxious",
+      "say": "Anxious — thank you for telling me. We'll go gentle and grounding today."
+    },
+    {
+      "id": "overthinking",
+      "label": "Overthinking",
+      "say": "A busy mind. I'll pick things that give it one simple focus."
+    },
+    {
+      "id": "irritable",
+      "label": "Irritable",
+      "say": "Feeling heated. Let's cool and soften things today."
+    },
+    {
+      "id": "stressed",
+      "label": "Stressed",
+      "say": "Lots on your plate. We'll keep today short and steady."
+    },
+    {
+      "id": "low",
+      "label": "Low",
+      "say": "A low day is okay. Let's add a little warmth and lift."
+    },
+    {
+      "id": "sluggish",
+      "label": "Sluggish",
+      "say": "Heavy and slow — let's wake the body up gently."
+    }
   ],
-  "okay": { "label": "Feeling okay today", "say": "Glad you're okay! We'll keep you nicely balanced." },
+  "okay": {
+    "label": "Feeling okay today",
+    "say": "Glad you're okay! We'll keep you nicely balanced."
+  },
   "checkinAsk": "How are you feeling today? Pick the one that fits best.",
-  "todayLines": ["Here are your three for today. Take them one at a time.", "Lovely — one done. Take the next one whenever you're ready.", "Two done! Just one more and today is complete.", "All three done. That's a calm, kind day."],
+  "todayLines": [
+    "Here are your three for today. Take them one at a time.",
+    "Lovely — one done. Take the next one whenever you're ready.",
+    "Two done! Just one more and today is complete.",
+    "All three done. That's a calm, kind day."
+  ],
   "noMatch": "Nothing in this part fits your diet yet. Prana is learning more practices.",
   "support": {
     "title": "Talk to someone",
     "body": "If things feel heavy or you need to talk, a trained counsellor can help — free and confidential.",
-    "lines": [{ "name": "Tele-MANAS", "what": "India's national mental health helpline · free, 24×7", "tel": "14416" }, { "name": "Emergency", "what": "Police, ambulance, fire", "tel": "112" }]
+    "lines": [
+      {
+        "name": "Tele-MANAS",
+        "what": "India's national mental health helpline · free, 24×7",
+        "tel": "14416"
+      },
+      {
+        "name": "Emergency",
+        "what": "Police, ambulance, fire",
+        "tel": "112"
+      }
+    ]
+  },
+  "hum": {
+    "setup": "Let's hum together. First, how settled do you feel right now?",
+    "settledQ": "How settled do you feel?",
+    "scale": [
+      "Not at all",
+      "Very settled"
+    ],
+    "micWhy": "I listen to how long and how steadily you hum — the sound is measured on your phone and never recorded or sent. Without the mic, you can still practise with a simple timer.",
+    "micDenied": "I couldn't use the microphone.",
+    "noiseAsk": "Stay quiet for 3 seconds so I can tell your hum apart from the room.",
+    "noisy": "It's a bit too noisy here for me to listen well.",
+    "ready": "Breathe in slowly through your nose, then hum softly.",
+    "humming": "Lovely — I'm humming with you…",
+    "timerHint": "Hold the button while you hum, let go to breathe in.",
+    "endEarly": "You've done fewer than 2 rounds, so this session won't be saved. End anyway?",
+    "privacy": "Your voice was analysed on this device only. Only these numbers are saved.",
+    "after": {
+      "better": "You feel {n} more settled than before. I'll remember this works for you.",
+      "same": "About the same as before — that's okay. Some days are like that.",
+      "worse": "A little less settled. Thank you for being honest — that helps me learn what suits you."
+    }
   }
 }

@@ -8,6 +8,20 @@
 
 ## 18 Nov 2026
 
+**D-31. One set of change functions for every store** (`lib/userData.js`). The local store saves
+with them; after a Supabase write succeeds the screen applies the same function — so local and
+cloud can't drift, and nothing is re-downloaded after each tap. If a write fails, the screen does
+not change and "Couldn't save" is shown.
+
+**D-32. Supabase is switched on by env vars alone.** No env vars → local preview mode. This keeps
+tests, demos and development working without a backend.
+
+**D-33. Hum coach falls back to timer-only** when the mic is unavailable, denied, or the room is too
+noisy. Timer-only sessions save `steadyRounds = null` so Progress stays honest.
+
+**D-34. Account deletion relies on `on delete cascade`.** One server call deletes the auth user; the
+database removes their rows. Verified in tests against a real Postgres.
+
 **D-29. The app runs on a local stand-in until Supabase is connected.** `lib/db.js` and
 `lib/auth.js` save to the browser and expose the exact async functions the Supabase version will
 have, so connecting Supabase (M2c) changes only those two files. The welcome screen says

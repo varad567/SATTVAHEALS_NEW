@@ -4,6 +4,7 @@
  */
 import { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useApp } from './AppState.jsx';
 
 const ICONS = {
   Today: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5" /></>,
@@ -19,6 +20,7 @@ function useOnline() {
 
 export default function Shell({ children }) {
   const online = useOnline();
+  const { saveError } = useApp();
   return (
     <div className="shell">
       <nav className="nav" aria-label="Main">
@@ -30,7 +32,8 @@ export default function Shell({ children }) {
         ))}
       </nav>
       <main className="shell__main">
-        {!online && <p className="offline" role="status">You're offline. Changes will save when you're back.</p>}
+        {!online && <p className="offline" role="status">You're offline — changes can't be saved until you're back.</p>}
+        {online && saveError && <p className="offline" role="alert">Couldn't save that change. Please try again.</p>}
         {children}
       </main>
     </div>

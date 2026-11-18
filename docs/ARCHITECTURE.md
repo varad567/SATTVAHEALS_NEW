@@ -37,9 +37,10 @@ Prana chat is available on every page (landing included).
 sattvaheals/
 ├── CONTEXT.md                 ← read first
 ├── docs/                      ← PRD, CORE_LOGIC, DESIGN, ARCHITECTURE, DECISIONS
+├── supabase/schema.sql        ← tables + RLS; run once in Supabase SQL Editor
 ├── api/
-│   ├── chat.js                ← Prana chat endpoint (CORE_LOGIC §7)
-│   ├── delete-account.js      ← removes the auth user (needs service role key)
+│   ├── chat.js                ← Prana chat endpoint (CORE_LOGIC §7) — chat milestone
+│   ├── delete-account.js      ← verifies the user's token, deletes that auth user; rows cascade
 │   └── prompts/prana.txt      ← Gemini system prompt
 ├── src/
 │   ├── main.jsx, App.jsx      ← router + auth guard
@@ -52,11 +53,17 @@ sattvaheals/
 │   │   ├── buildReason.js     ← §5
 │   │   ├── chatRoute.js       ← §7.1–7.3 (shared by client + api)
 │   │   ├── progressStats.js   ← §8
-│   │   └── hum/               ← detectHum.js, measure.js, pitch.js, pickTip.js  (§6)
+│   │   └── hum/               ← signal.js (loudness, pitch), coach.js (detector, tips, summary, T)  (§6)
 │   ├── lib/
-│   │   ├── supabase.js        ← client
-│   │   └── db.js              ← every database read/write in one place
-│   ├── hooks/                 ← useAuth.js, useMic.js, useToday.js
+│   │   ├── supabase.js        ← client, or null when env vars are missing (= local preview mode)
+│   │   ├── db.js              ← picks the store: Supabase if configured, else this browser
+│   │   ├── db.remote.js       ← Supabase store (snake_case ↔ camelCase mapping lives only here)
+│   │   ├── db.local.js        ← browser store (preview + tests), same functions
+│   │   ├── userData.js        ← how each change updates data — shared by both stores and the screen
+│   │   ├── auth.js            ← Google sign-in via Supabase, or a local preview user
+│   │   └── format.js          ← dates (local midnight), greeting, cap()
+│   ├── hooks/useMic.js        ← mic on/off + one measurement per read(); audio never stored
+│   ├── app/                   ← AppState (single source of truth), AppRoutes (Flow 1 gate), Shell
 │   ├── components/            ← Prana, Card, Nav, Sidebar, Bubble, Meter, ChatWidget…
 │   ├── landing/               ← landing sections + scrollStory.js (GSAP)
 │   └── pages/                 ← one file per screen
@@ -88,8 +95,9 @@ chat_global   (day date PK, gemini_calls int)
 - **RLS on every table**: a user can only select/insert/update/delete rows where
   `user_id = auth.uid()` (`id = auth.uid()` for profiles).
 - Chat messages are **never** stored.
-- **Delete my data**: client deletes the user's rows (RLS allows it), then calls
-  `/api/delete-account`, which verifies the user's token and deletes the auth user.
+- **Delete my data**: the client calls `/api/delete-account` with the user's token; the function
+  verifies it and deletes that auth user; `on delete cascade` removes every row they own.
+- Full SQL: `supabase/schema.sql`. It is tested in a real Postgres (PGlite) with RLS on.
 
 ## 5. Environment variables (Vercel → Settings → Environment Variables)
 
@@ -107,6 +115,14 @@ chat_global   (day date PK, gemini_calls int)
 Secrets never get the `VITE_` prefix (that would ship them to the browser).
 
 ## 6. Deployment
+
+**Supabase (once):** 1) create a project; 2) SQL Editor → paste and run `supabase/schema.sql`;
+3) Authentication → Providers → Google → on (needs a Google Cloud OAuth client); 4) Authentication →
+URL configuration → Site URL `https://sattvaheals.in`, redirect `https://sattvaheals.in/app`
+(plus `http://localhost:5173/app` for local dev); 5) copy Project URL + anon key into Vercel env vars
+(and `.env.local` for dev); service role key only into Vercel, never `VITE_`.
+
+**Vercel:**
 
 1. New GitHub repo `sattvaheals` (fresh history).
 2. Import into Vercel → framework "Vite" → add env vars.
@@ -127,7 +143,7 @@ Secrets never get the `VITE_` prefix (that would ship them to the browser).
 
 | Command | What it checks |
 |---|---|
-| `npm test` | Unit tests (Vitest): components, routes, content rules (shape, Jain/vegan ingredients, compliance words), and the engine — every one of the 531,441 quiz answer sets, all 315 user scenarios for Today's 3, 7-day variety, and no dead content |
-| `npm run test:e2e` | Landing: real Chrome at 320 / 390 / 768 / 1024 / 1280 / 1920 px. App: the whole journey (welcome → quiz → prefs → reveal → check-in → Today → support → progress → profile → delete) at 390 and 1280 px. Both check: no sideways scroll, nothing cut off, no console errors, tap targets ≥ 44px on phones, axe WCAG 2.1 AA, reduced-motion rendering, keyboard focus, scroll story, FAQ, routes and deep links. Saves screenshots to `e2e/shots/` — look at them; some bugs only show by eye. |
+| `npm test` | Unit tests (Vitest): the schema in real Postgres (RLS, constraints, cascade), the Supabase store mapping, the delete-account API, the hum engine on synthetic audio, the hum screen with a fake mic, components, routes, content rules (shape, Jain/vegan ingredients, compliance words), and the engine — every one of the 531,441 quiz answer sets, all 315 user scenarios for Today's 3, 7-day variety, and no dead content |
+| `npm run test:e2e` | Hum coach: Chrome's real audio pipeline with a fake mic playing a generated hum recording (`e2e/hum.wav`). Landing: real Chrome at 320 / 390 / 768 / 1024 / 1280 / 1920 px. App: the whole journey (welcome → quiz → prefs → reveal → check-in → Today → support → progress → profile → delete) at 390 and 1280 px. Both check: no sideways scroll, nothing cut off, no console errors, tap targets ≥ 44px on phones, axe WCAG 2.1 AA, reduced-motion rendering, keyboard focus, scroll story, FAQ, routes and deep links. Saves screenshots to `e2e/shots/` — look at them; some bugs only show by eye. |
 
 When a bug is found by eye, add a check for it to the e2e file so it can't return.

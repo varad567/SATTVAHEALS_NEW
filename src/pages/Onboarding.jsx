@@ -17,14 +17,14 @@ const DRAFT = 'sh.quiz.draft'; // CORE_LOGIC §2.5
 const loadDraft = () => { try { return JSON.parse(localStorage.getItem(DRAFT)) || []; } catch { return []; } };
 
 export default function Onboarding() {
-  const { data, saveProfile } = useApp();
+  const { data, user, saveProfile } = useApp();
   const retake = useSearchParams()[0].has('retake');
   const go = useNavigate();
   const [answers, setAnswers] = useState(() => (retake ? [] : loadDraft()));
   const [i, setI] = useState(() => Math.min(answers.length, quiz.length - 1));
   const [step, setStep] = useState(answers.length >= quiz.length ? 'prefs' : 'quiz');
   const [prefs, setPrefs] = useState(data?.profile?.prefs ?? { minutes: 10, diet: 'vegetarian', wake: '06:30' });
-  const [name, setName] = useState(data?.profile?.name ?? '');
+  const [name, setName] = useState(data?.profile?.name ?? user?.name ?? ''); // Google first name, if any
 
   const tally = { vata: 0, pitta: 0, kapha: 0 };
   answers.forEach((a) => tally[DOSHAS[a]]++);

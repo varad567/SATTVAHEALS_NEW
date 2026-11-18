@@ -5,4 +5,4 @@
 import '@testing-library/jest-dom/vitest';
 
 // jsdom has no matchMedia; default to "motion allowed". Tests can override.
-window.matchMedia ||= (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} });
+if (typeof window !== 'undefined') window.matchMedia ||= (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} });

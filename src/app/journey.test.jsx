@@ -57,6 +57,20 @@ describe('Error recovery', () => {
   });
 });
 
+describe('Save failures', () => {
+  it('a failed save shows "Couldn\u2019t save" and the card stays not done', async () => {
+    await onboard();
+    const db = await import('../lib/db.js');
+    const spy = vi.spyOn(db, 'setDone').mockRejectedValueOnce(new Error('offline'));
+    await click(screen.getAllByRole('button', { name: /^Mark done:/ })[0]);
+    expect(screen.getByRole('alert')).toHaveTextContent(/couldn't save/i);
+    expect(screen.getAllByRole('button', { name: /^Mark done:/ })).toHaveLength(3);
+    spy.mockRestore();
+    await click(screen.getAllByRole('button', { name: /^Mark done:/ })[0]); // works again → message clears
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+});
+
 describe('Flow 2 — onboarding', () => {
   it('Back keeps earlier answers and the first question has no Back', async () => {
     localStorage.setItem('sh.user', JSON.stringify({ id: 'u' }));

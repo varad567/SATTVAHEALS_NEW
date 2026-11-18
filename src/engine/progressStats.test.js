@@ -36,6 +36,11 @@ describe('progressStats', () => {
     const r = progressStats({ today, sessions: [1, 2, 3].map((d) => s(`2026-11-1${d}`, 'om', 4, 3)) });
     expect(r.works.om.change).toBe(-1);
   });
+  it('timer-only sessions (no steadiness) do not count towards steady %', () => {
+    const r = progressStats({ today, sessions: [s('2026-11-18', 'om', null, null, 8, null, 6), s('2026-11-17', 'om', null, null, 8, 3, 6)] });
+    expect(r.steadyPct).toBe(50);
+    expect(progressStats({ today, sessions: [s('2026-11-18', 'om', null, null, 8, null, 6)] }).steadyPct).toBeNull();
+  });
   it('weekly hum averages and steady %', () => {
     const r = progressStats({ today, sessions: [s('2026-11-18', 'om', null, null, 10, 6, 6), s('2026-11-10', 'om', null, null, 6, 3, 6)] });
     expect(r.avgHumByWeek).toEqual([6, 10]);

@@ -4,7 +4,7 @@
 > It tells you what Sattva Heals is, where everything lives, and the rules you must follow.
 > If this file disagrees with any other doc, this file wins until it is updated.
 
-**Last updated:** 18 Nov 2026 · **Owner:** Varad Bidwai · **Status:** v1 rebuild — docs done, build next
+**Last updated:** 18 Nov 2026 · **Owner:** Varad Bidwai · **Status:** landing, app, hum coach and Supabase layer built and tested; chat + deploy next
 
 ---
 
