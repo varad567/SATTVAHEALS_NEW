@@ -1,0 +1,30 @@
+/* FILE: src/components/prana.css — Prana shapes + motion (docs/DESIGN.md §2–3). */
+.prana { --prana-s: 1; position: relative; flex-shrink: 0; width: calc(230px * var(--prana-s)); height: calc(220px * var(--prana-s)); }
+.prana__stage { position: absolute; inset: 0 auto auto 0; width: 230px; height: 220px; transform-origin: 0 0; transform: scale(var(--prana-s)); }
+.prana__pop { animation: prana-pop .7s cubic-bezier(.3,1.4,.5,1); }
+.prana__body { position: relative; width: 230px; height: 220px; animation: prana-bob 2.6s ease-in-out infinite, prana-breathe 4s ease-in-out infinite; }
+.prana__body > span { position: absolute; border-radius: 48% 52% 62% 38% / 44% 56% 44% 56%; }
+.prana__l1 { left: 96px; top: 12px; width: 130px; height: 120px; animation: prana-morph 8s ease-in-out infinite, prana-drift1 7s ease-in-out infinite; }
+.prana__l2 { left: 0; top: 120px; width: 96px; height: 90px; animation: prana-morph2 6s ease-in-out infinite, prana-drift2 5.5s ease-in-out infinite; }
+.prana__l3 { left: 30px; top: 40px; width: 150px; height: 140px; display: flex; align-items: center; justify-content: center; animation: prana-morph 5s ease-in-out infinite reverse; }
+.prana__face { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: prana-look 7s ease-in-out infinite; }
+.prana__eyes { display: flex; gap: 26px; height: 15px; align-items: center; }
+.prana__eyes i { width: 11px; height: 15px; border-radius: 50%; background: var(--plum); animation: prana-blink 4.5s infinite; }
+.prana__mouth { width: 30px; height: 13px; border: 3.5px solid var(--plum); border-top: 0; border-radius: 0 0 30px 30px; }
+/* happy: arched eyes + open smile */
+.prana__face--happy .prana__eyes i { width: 16px; height: 9px; background: none; border: 3.5px solid var(--plum); border-bottom: 0; border-radius: 16px 16px 0 0; animation: none; }
+.prana__face--happy .prana__mouth { width: 34px; height: 17px; border: 0; border-radius: 0 0 34px 34px; background: var(--plum); }
+/* humming: closed eyes + small pulsing mouth */
+.prana__face--humming .prana__eyes i { width: 16px; height: 4px; border-radius: 4px; animation: none; }
+.prana__face--humming .prana__mouth { width: 13px; height: 13px; border: 0; border-radius: 50%; background: var(--plum); animation: prana-hum .5s ease-in-out infinite; }
+
+@keyframes prana-morph { 0%,100% { border-radius: 48% 52% 62% 38% / 44% 56% 44% 56% } 33% { border-radius: 60% 40% 45% 55% / 55% 45% 58% 42% } 66% { border-radius: 40% 60% 55% 45% / 48% 60% 40% 52% } }
+@keyframes prana-morph2 { 0%,100% { border-radius: 55% 45% 40% 60% / 50% 42% 58% 50% } 50% { border-radius: 42% 58% 60% 40% / 58% 50% 50% 42% } }
+@keyframes prana-bob { 0%,100% { translate: 0 0 } 50% { translate: 0 -8px } }
+@keyframes prana-breathe { 0%,100% { scale: 1 1 } 50% { scale: 1.05 .96 } }
+@keyframes prana-drift1 { 0%,100% { translate: 0 0 } 50% { translate: 8px -6px } }
+@keyframes prana-drift2 { 0%,100% { translate: 0 0 } 50% { translate: -7px 5px } }
+@keyframes prana-look { 0%,40%,100% { translate: 0 0 } 50%,60% { translate: -4px 1px } 70%,85% { translate: 4px -1px } }
+@keyframes prana-blink { 0%,92%,100% { transform: scaleY(1) } 96% { transform: scaleY(.1) } }
+@keyframes prana-pop { 0% { scale: .8 } 60% { scale: 1.12 } 100% { scale: 1 } }
+@keyframes prana-hum { 0%,100% { scale: 1 } 50% { scale: 1.3 } }

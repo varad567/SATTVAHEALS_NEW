@@ -1,0 +1,31 @@
+{
+  "hero": {
+    "eyebrow": "सत्त्व · everyday wellbeing",
+    "title": ["Feel more settled,", "one small practice", "at a time."],
+    "sub": "Find your Prakriti, tell Prana how today feels, and get three small practices made for you — rooted in dinacharya, ahara and mantra.",
+    "bubble": "Hi, I'm Prana. Once I know you, I'll take your shape."
+  },
+  "steps": [
+    { "n": "01", "title": "Find your Prakriti", "body": "Twelve quick questions reveal your balance of Vata, Pitta and Kapha. Prana takes on your colours.", "colors": "all", "mood": "idle" },
+    { "n": "02", "title": "Tell Prana how today feels", "body": "Anxious, overthinking, low, or just okay — one tap is all it takes. Prana listens.", "colors": "vata", "mood": "idle" },
+    { "n": "03", "title": "Get your three for today", "body": "One routine, one food, one sound practice — each with a line on why it suits you. No feed, no overload.", "colors": "vata", "mood": "happy" }
+  ],
+  "hum": {
+    "title": ["A hum coach that", "actually listens."],
+    "body": "Bhramari and Om, guided live. Prana listens through your microphone and gives one gentle tip at a time.",
+    "measures": ["How long each hum lasts", "Your breath between hums", "How steady it stays", "How loud it is", "Whether your pitch stays low and easy"],
+    "privacy": "Your voice is analysed on your phone and never uploaded."
+  },
+  "cards": [
+    { "title": "Why this, for you", "body": "Every practice tells you why it was picked — your Prakriti, your mood, your diet. Nothing is a black box." },
+    { "title": "See what works for you", "body": "Tap how settled you feel before and after each hum session. Over time, you see which practice helps you most." },
+    { "title": "Just today's three", "body": "No endless library to scroll. Three small things, done in the time you have." }
+  ],
+  "rooted": {
+    "title": ["Rooted in tradition,", "careful with claims."],
+    "body": "Practices come from Indian Knowledge Systems — daily routine, food and sound. Humming breath and Om chanting have been looked at in small research studies on relaxation, and we choose practices with that in mind.",
+    "note": "Sattva Heals is a wellbeing companion. It does not diagnose, and it is not a substitute for professional care."
+  },
+  "cta": { "title": ["Three small practices.", "Starting today."], "sub": "Free, for anyone 18 or over." },
+  "footer": { "help": "Need to talk to someone? Tele-MANAS: 14416 (free, 24×7). In an emergency, call 112." }
+}
