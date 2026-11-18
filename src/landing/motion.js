@@ -18,7 +18,7 @@ export function initLandingMotion(root) {
     gsap.to('.lp-hero__blob', { y: 80, rotation: 8, ease: 'none', scrollTrigger: scrub('.lp-hero', 'top top') });
     gsap.from('.lp-card', { y: 32, opacity: 0, stagger: 0.12, duration: 0.9, ease: 'power2.out',
       scrollTrigger: { trigger: '.lp-cards', start: 'top 80%' } });
-    gsap.fromTo('.lp-cta__blob', { scale: 0.6 }, { scale: 1.2, ease: 'none', scrollTrigger: scrub('.lp-cta', 'top bottom', 'center center') });
+    gsap.fromTo('.lp-cta__blob', { scale: 0.7, rotation: -10 }, { scale: 1, rotation: 0, ease: 'none', scrollTrigger: scrub('.lp-cta', 'top bottom', 'center center') });
   }, root);
 
   return () => ctx.revert();

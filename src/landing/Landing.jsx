@@ -62,9 +62,12 @@ export default function Landing() {
           </div>
         </section>
 
-        <section className="lp-cards" aria-labelledby="diff">
-          <h2 id="diff" className="sr-only">Why it's different</h2>
-          {copy.cards.map((c) => <article key={c.title} className="lp-card"><h3>{c.title}</h3><p>{c.body}</p></article>)}
+        <section className="lp-diff" aria-labelledby="diff">
+          <p className="eyebrow">Why it's different</p>
+          <h2 id="diff">Made for you, <em>not for everyone.</em></h2>
+          <div className="lp-cards">
+            {copy.cards.map((c, i) => <article key={c.title} className="lp-card"><span className="lp-card__n">{`0${i + 1}`}</span><h3>{c.title}</h3><p>{c.body}</p></article>)}
+          </div>
         </section>
 
         <section className="lp-rooted">
@@ -73,8 +76,15 @@ export default function Landing() {
         </section>
 
         <section id="faq" className="lp-faq">
-          <h2>Questions, <em>answered</em></h2>
-          <div>{faq.map((f) => <details key={f.q}><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+          <div className="lp-faq__head">
+            <p className="eyebrow">FAQ</p>
+            <h2>Questions, <em>answered.</em></h2>
+            <p>Still curious? Sign in and ask Prana anything about the app.</p>
+            <Prana size={120} />
+          </div>
+          <div className="lp-faq__list">
+            {faq.map((f) => <details key={f.q}><summary>{f.q}<span aria-hidden="true" /></summary><p>{f.a}</p></details>)}
+          </div>
         </section>
 
         <section className="lp-cta">

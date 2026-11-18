@@ -15,18 +15,24 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--cream); color: var(--plum); font: 16px/1.6 var(--font-body); overflow-x: hidden; }
-h1, h2, h3 { font-family: var(--font-head); font-weight: 400; letter-spacing: -0.035em; line-height: 1.05; margin: 0; }
+h1, h2, h3 { font-family: var(--font-head); font-weight: 400; letter-spacing: -0.035em; line-height: 1.05; margin: 0; text-wrap: balance; }
 h1 em, h2 em, h3 em { color: var(--purple); }
-p { margin: 0; }
+p { margin: 0; text-wrap: pretty; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
 
 .eyebrow { font-size: 11px; letter-spacing: 2.3px; text-transform: uppercase; font-weight: 600; color: var(--purple); }
 .btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px;
   padding: 0 26px; border: 0; border-radius: var(--r-pill); background: var(--plum); color: var(--cream);
-  font: 500 15px var(--font-body); text-decoration: none; cursor: pointer; }
+  font: 500 15px var(--font-body); text-decoration: none; cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; }
+.btn:hover { background: var(--purple); box-shadow: 0 8px 20px -10px var(--plum); }
+.btn:active { transform: scale(.97); }
+.btn span { transition: translate .2s; }
+.btn:hover span { translate: 4px 0; }
 .btn--ghost { background: transparent; color: var(--plum); border: 1.5px solid #35143F33; }
+.btn--ghost:hover { background: var(--lav-1); box-shadow: none; }
 .btn--gold { background: var(--gold); color: var(--plum); }
+.btn--gold:hover { background: #f0b676; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {
