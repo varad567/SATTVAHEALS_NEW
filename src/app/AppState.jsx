@@ -1,6 +1,7 @@
 /**
  * FILE: src/app/AppState.jsx
- * PURPOSE: The app's single source of truth: who's signed in, their data, today's date and Today's 3.
+ * PURPOSE: The app's single source of truth: who's signed in, their data, today's date, Today's 3
+ *   and Prana's colours.
  *   Pages read from useApp() and call its actions; they never touch db.js or the engine directly.
  * PLAN RULE: Today's 3 is recomputed from inputs every render (pickToday is deterministic), with today's
  *   done cards kept (CORE_LOGIC §4.5). So mood changes, retakes and pref edits re-pick only not-done cards.
@@ -8,8 +9,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import * as db from '../lib/db.js';
 import * as auth from '../lib/auth.js';
-import { todayISO, addDays } from '../lib/date.js';
+import { todayISO, addDays } from '../lib/format.js';
 import { pickToday } from '../engine/pickToday.js';
+import { colorsFor } from '../components/Prana.jsx';
 import practices from '../content/practices.json';
 
 const Ctx = createContext(null);
@@ -19,8 +21,14 @@ export function AppProvider({ children }) {
   const [user, setUser] = useState(auth.currentUser);
   const [data, setData] = useState(null); // null = loading
   const [date, setDate] = useState(todayISO);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
-  useEffect(() => { let alive = true; if (user) db.load(user.id).then((d) => alive && setData(d)); else setData(null); return () => { alive = false; }; }, [user]);
+  useEffect(() => {
+    let alive = true; setFailed(false);
+    if (user) db.load(user.id).then((d) => alive && setData(d), () => alive && setFailed(true)); else setData(null);
+    return () => { alive = false; };
+  }, [user, attempt]);
 
   // New day at local midnight, even if the tab stayed open (Flow 3): re-check when the user comes back.
   useEffect(() => {
@@ -48,9 +56,9 @@ export function AppProvider({ children }) {
     const history = data.completions.filter((c) => c.date < date && c.date >= weekAgo);
     const { prakriti, prefs } = data.profile;
     const plan = pickToday({ practices, dominant: prakriti.dominant, mood: mood ?? 'okay', prefs, history, date, keep: doneToday });
-    return { mood, doneToday, plan };
+    return { mood, doneToday, plan, colors: colorsFor(prakriti) };
   }, [data, date]);
 
-  const value = { user, data, date, loading: !!user && !data, signIn: async () => setUser(await auth.signIn()), ...actions, ...view };
+  const value = { user, data, date, failed, retry: () => setAttempt((n) => n + 1), loading: !!user && !data && !failed, signIn: async () => setUser(await auth.signIn()), ...actions, ...view };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

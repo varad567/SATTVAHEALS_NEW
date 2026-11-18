@@ -1,5 +1,5 @@
 import * as db from './db.js';
-import { todayISO, addDays, greeting, dayLabel } from './date.js';
+import { todayISO, addDays, greeting, dayLabel } from './format.js';
 
 beforeEach(() => localStorage.clear());
 

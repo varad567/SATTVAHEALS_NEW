@@ -44,6 +44,19 @@ describe('Flow 1 — welcome and gate', () => {
   });
 });
 
+describe('Error recovery', () => {
+  it('shows a retry screen when data fails to load, and recovers', async () => {
+    const db = await import('../lib/db.js');
+    const spy = vi.spyOn(db, 'load').mockRejectedValueOnce(new Error('offline'));
+    localStorage.setItem('sh.user', JSON.stringify({ id: 'u' }));
+    at('/app');
+    expect(await screen.findByRole('alert')).toHaveTextContent(/couldn't load/i);
+    await click(btn(/try again/i));
+    expect(await screen.findByText(/Question 1 of/)).toBeInTheDocument();
+    spy.mockRestore();
+  });
+});
+
 describe('Flow 2 — onboarding', () => {
   it('Back keeps earlier answers and the first question has no Back', async () => {
     localStorage.setItem('sh.user', JSON.stringify({ id: 'u' }));

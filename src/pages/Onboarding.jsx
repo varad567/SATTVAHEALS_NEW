@@ -5,10 +5,11 @@
  */
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import Prana, { colorsFor } from '../components/Prana.jsx';
-import { Bubble } from '../components/ui.jsx';
+import { colorsFor } from '../components/Prana.jsx';
+import { Flow } from '../components/ui.jsx';
 import { useApp } from '../app/AppState.jsx';
-import { scorePrakriti } from '../engine/scorePrakriti.js';
+import { scorePrakriti, DOSHAS } from '../engine/scorePrakriti.js';
+import { cap } from '../lib/format.js';
 import quiz from '../content/quiz.json';
 import copy from '../content/app.json';
 
@@ -26,7 +27,8 @@ export default function Onboarding() {
   const [name, setName] = useState(data?.profile?.name ?? '');
 
   const tally = { vata: 0, pitta: 0, kapha: 0 };
-  answers.forEach((a) => tally[['vata', 'pitta', 'kapha'][a]]++);
+  answers.forEach((a) => tally[DOSHAS[a]]++);
+  const live = { colors: answers.length ? colorsFor(tally) : undefined, popKey: answers.length };
 
   const answer = (k) => {
     const next = [...answers.slice(0, i), k, ...answers.slice(i + 1)];
@@ -35,8 +37,7 @@ export default function Onboarding() {
     else if (retake) finish(next); else setStep('prefs');
   };
   async function finish(all = answers) {
-    const prakriti = scorePrakriti(all);
-    await saveProfile({ ...data?.profile, name: name.trim(), prefs, prakriti });
+    await saveProfile({ ...data?.profile, name: name.trim(), prefs, prakriti: scorePrakriti(all) });
     localStorage.removeItem(DRAFT);
     setStep('reveal');
   }
@@ -45,55 +46,46 @@ export default function Onboarding() {
     const p = data.profile.prakriti;
     const blurb = copy.doshaBlurbs[p.label.startsWith('Tridosha') ? 'tridosha' : p.dominant];
     return (
-      <main className="screen screen--center">
+      <Flow hero prana={{ colors: colorsFor(p), mood: 'happy', popKey: 'reveal' }} say={`${blurb} I've taken your colours.`}>
         <p className="eyebrow">Your Prakriti</p>
-        <Prana size={200} colors={colorsFor(p)} mood="happy" popKey={1} />
         <h1>{p.label}</h1>
-        <p className="lead">{blurb} I've taken your colours.</p>
         <div className="card bars">
-          {['vata', 'pitta', 'kapha'].map((d) => (
-            <div key={d} className="bar"><span>{d[0].toUpperCase() + d.slice(1)}</span><b>{p[d]}%</b>
-              <i className={`bar__fill bar__fill--${d}`} style={{ width: `${p[d]}%` }} /></div>
-          ))}
+          {DOSHAS.map((d) => <div key={d} className="bar"><span>{cap(d)}</span><b>{p[d]}%</b><i className={`bar__fill bar__fill--${d}`} style={{ width: `${p[d]}%` }} /></div>)}
         </div>
         <button type="button" className="btn btn--wide" onClick={() => go(retake ? '/app/today' : '/app/checkin')}>
           {retake ? 'Back to today' : "Continue to today's check-in"} <span aria-hidden="true">→</span></button>
-      </main>
+      </Flow>
     );
   }
 
   if (step === 'prefs') {
     const P = copy.prefs;
-    const opt = (key, values, label = (v) => v) => (
+    const opt = (key, label = String) => (
       <fieldset className="choices"><legend>{P[key].q}</legend>
-        {values.map((v) => <button key={v} type="button" aria-pressed={prefs[key] === v} onClick={() => setPrefs({ ...prefs, [key]: v })}>{label(v)}</button>)}
+        {P[key].o.map((v) => <button key={v} type="button" aria-pressed={prefs[key] === v} onClick={() => setPrefs({ ...prefs, [key]: v })}>{label(v)}</button>)}
       </fieldset>);
     return (
-      <main className="screen">
+      <Flow prana={live} say="Almost there — a few quick ones so your practices fit your day.">
         <p className="eyebrow">A little about your day</p>
         <h1>Almost <em>there.</em></h1>
         <label className="field">{P.name}<input value={name} maxLength={30} autoComplete="given-name" onChange={(e) => setName(e.target.value)} placeholder="Your first name" /></label>
-        {opt('minutes', P.minutes.o, (v) => `${v} min`)}
-        {opt('diet', P.diet.o, (v) => v[0].toUpperCase() + v.slice(1))}
-        {opt('wake', P.wake.o)}
+        {opt('minutes', (v) => `${v} min`)}{opt('diet', cap)}{opt('wake')}
         <button type="button" className="btn btn--wide" onClick={() => finish()}>Reveal my Prakriti <span aria-hidden="true">→</span></button>
-      </main>
+      </Flow>
     );
   }
 
-  const q = quiz[i];
   return (
-    <main className="screen">
+    <Flow prana={live} say={copy.quizLines[Math.min(5, Math.floor(i / 2.4))]}>
       <div className="quiz-top">
         <button type="button" className="icon-btn" aria-label="Previous question" disabled={i === 0} onClick={() => setI(i - 1)}>←</button>
-        <span className="eyebrow">Question {i + 1} of {quiz.length}</span><span className="icon-btn" aria-hidden="true" />
+        <span className="eyebrow">Question {i + 1} of {quiz.length}</span>
       </div>
       <div className="progress" role="progressbar" aria-label="Quiz progress" aria-valuemin={0} aria-valuemax={quiz.length} aria-valuenow={answers.length}><i style={{ width: `${(answers.length / quiz.length) * 100}%` }} /></div>
-      <div className="row"><Prana size={96} colors={answers.length ? colorsFor(tally) : undefined} popKey={answers.length} /><Bubble tail>{copy.quizLines[Math.min(5, Math.floor(i / 2.4))]}</Bubble></div>
-      <h1 className="h-q" key={i}>{q.q}</h1>
+      <h1 className="h-q" key={i}>{quiz[i].q}</h1>
       <div className="options">
-        {q.o.map((t, k) => <button key={t} type="button" aria-pressed={answers[i] === k} onClick={() => answer(k)}>{t}</button>)}
+        {quiz[i].o.map((t, k) => <button key={t} type="button" aria-pressed={answers[i] === k} onClick={() => answer(k)}>{t}</button>)}
       </div>
-    </main>
+    </Flow>
   );
 }

@@ -17,8 +17,9 @@ import './app.css';
 
 /** need: 'user' | 'profile' | 'checkin' — the minimum state a page requires; otherwise send the user back a step. */
 function Guard({ need, children }) {
-  const { user, loading, data, mood } = useApp();
+  const { user, loading, failed, retry, data, mood } = useApp();
   if (!user) return <Welcome />;
+  if (failed) return <main className="screen screen--center" role="alert"><Prana size={120} /><h1>Couldn't load your data</h1><p>Check your connection and try again.</p><button type="button" className="btn" onClick={retry}>Try again <span aria-hidden="true">→</span></button></main>;
   if (loading) return <main className="screen screen--center" aria-busy="true"><Prana size={120} /><p>Prana is getting ready…</p></main>;
   if (need !== 'user' && !data.profile) return <Navigate to="/app/onboarding" replace />;
   if (need === 'checkin' && !mood) return <Navigate to="/app/checkin" replace />;

@@ -1,11 +1,26 @@
 /**
  * FILE: src/components/ui.jsx
- * PURPOSE: Small shared pieces used by app screens: Bubble (Prana speaking), Sheet (modal), SupportSheet.
+ * PURPOSE: Shared pieces for app screens: Bubble (Prana speaking), Flow (setup-screen layout), Sheet (modal), SupportSheet.
  */
 import { useEffect, useRef } from 'react';
+import Prana from './Prana.jsx';
 import copy from '../content/app.json';
 
-export const Bubble = ({ children, tail = false }) => <p className={`bubble${tail ? ' bubble--tail' : ''}`} aria-live="polite">{children}</p>;
+export const Bubble = ({ children }) => <p className="bubble" aria-live="polite">{children}</p>;
+
+/**
+ * Layout for setup screens (welcome, quiz, prefs, reveal, check-in).
+ * Phone: Prana + bubble in a row above the content (hero = big and centred instead).
+ * Desktop: split screen — Prana large in a lavender panel on the left, content on the right (DESIGN §6).
+ */
+export function Flow({ prana, say, hero = false, children }) {
+  return (
+    <div className={`flow${hero ? ' flow--hero' : ''}`}>
+      <aside className="flow__guide"><Prana {...prana} /><Bubble>{say}</Bubble></aside>
+      <main className="flow__body">{children}</main>
+    </div>
+  );
+}
 
 /** Bottom sheet on phones, centred card on desktop. Escape or the backdrop closes it; focus moves inside. */
 export function Sheet({ title, onClose, children }) {

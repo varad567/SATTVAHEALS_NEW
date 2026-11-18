@@ -4,12 +4,12 @@
  */
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Prana, { colorsFor } from '../components/Prana.jsx';
+import Prana from '../components/Prana.jsx';
 import { Bubble, SupportSheet } from '../components/ui.jsx';
 import { useApp } from '../app/AppState.jsx';
 import { buildReason } from '../engine/buildReason.js';
 import { MODULES } from '../engine/pickToday.js';
-import { greeting, dayLabel } from '../lib/date.js';
+import { greeting, dayLabel } from '../lib/format.js';
 import copy from '../content/app.json';
 
 const LABEL = { dinacharya: 'Dinacharya', ahara: 'Ahara', mantra: 'Mantra · Nada' };
@@ -40,7 +40,7 @@ function Card({ module, p, done, reason, onToggle }) {
 }
 
 export default function Today() {
-  const { data, date, plan, mood, doneToday, setDone } = useApp();
+  const { data, date, plan, mood, doneToday, setDone, colors } = useApp();
   const [help, setHelp] = useState(false);
   const { name, prakriti, prefs } = data.profile;
   const n = MODULES.filter((m) => doneToday[m]).length;
@@ -53,7 +53,7 @@ export default function Today() {
         <Link className="chip" to="/app/checkin" aria-label={`Today's mood: ${moodLabel}. Change`}>{moodLabel} ✎</Link>
       </header>
       <section className="today__prana" aria-label="Prana">
-        <Prana colors={colorsFor(prakriti)} mood={n === 3 ? 'happy' : 'idle'} popKey={n} />
+        <Prana colors={colors} mood={n === 3 ? 'happy' : 'idle'} popKey={n} />
         <div className="stack">
           <Bubble>{copy.todayLines[n]}</Bubble>
           <div className="pills" role="img" aria-label={`${n} of 3 done`}>{MODULES.map((m, k) => <i key={m} className={k < n ? 'on' : ''} />)}</div>
