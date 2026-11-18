@@ -39,7 +39,8 @@ sattvaheals/
 ├── docs/                      ← PRD, CORE_LOGIC, DESIGN, ARCHITECTURE, DECISIONS
 ├── supabase/schema.sql        ← tables + RLS; run once in Supabase SQL Editor
 ├── api/
-│   ├── chat.js                ← Prana chat endpoint (CORE_LOGIC §7) — chat milestone
+│   ├── chat.js                ← Prana chat endpoint: gates, limits, Gemini call, output filter (CORE_LOGIC §7)
+│   ├── _prompt.js             ← Gemini system prompt (underscore = not a route)
 │   ├── delete-account.js      ← verifies the user's token, deletes that auth user; rows cascade
 │   └── prompts/prana.txt      ← Gemini system prompt
 ├── src/
@@ -61,10 +62,11 @@ sattvaheals/
 │   │   ├── db.local.js        ← browser store (preview + tests), same functions
 │   │   ├── userData.js        ← how each change updates data — shared by both stores and the screen
 │   │   ├── auth.js            ← Google sign-in via Supabase, or a local preview user
-│   │   └── format.js          ← dates (local midnight), greeting, cap()
+│   │   ├── format.js          ← dates (local midnight), greeting, cap()
+│   │   └── sky.js             ← dawn/day/dusk/night + night theme on <html>
 │   ├── hooks/useMic.js        ← mic on/off + one measurement per read(); audio never stored
 │   ├── app/                   ← AppState (single source of truth), AppRoutes (Flow 1 gate), Shell
-│   ├── components/            ← Prana, Card, Nav, Sidebar, Bubble, Meter, ChatWidget…
+│   ├── components/            ← Prana, ui (Bubble, Flow, Sheet), art (Mandala, Flower, Celebrate, Skeleton, Gather), hum, ChatWidget
 │   ├── landing/               ← landing sections + scrollStory.js (GSAP)
 │   └── pages/                 ← one file per screen
 └── vercel.json                ← SPA rewrites (/app/* → index.html)
@@ -82,9 +84,8 @@ completions   (id bigserial PK, user_id uuid, date date, practice_id text, modul
 hum_sessions  (id bigserial PK, user_id uuid, date date, kind text, rounds int,
                avg_hum real, avg_inhale real, steady_rounds int,
                before smallint NULL, after smallint NULL, created_at timestamptz)
-chat_usage    (user_id uuid PK, window_start timestamptz, window_count int,
-               day date, day_count int, strikes int, strikes_since timestamptz,
-               locked_until timestamptz NULL)
+chat_usage    (user_id uuid PK → auth.users cascade, window_start, window_count, day, day_count,
+               strikes, strikes_since, locked_until)   -- counts only, never text
 chat_global   (day date PK, gemini_calls int)
 ```
 
@@ -144,6 +145,6 @@ URL configuration → Site URL `https://sattvaheals.in`, redirect `https://sattv
 | Command | What it checks |
 |---|---|
 | `npm test` | Unit tests (Vitest): the schema in real Postgres (RLS, constraints, cascade), the Supabase store mapping, the delete-account API, the hum engine on synthetic audio, the hum screen with a fake mic, components, routes, content rules (shape, Jain/vegan ingredients, compliance words), and the engine — every one of the 531,441 quiz answer sets, all 315 user scenarios for Today's 3, 7-day variety, and no dead content |
-| `npm run test:e2e` | Hum coach: Chrome's real audio pipeline with a fake mic playing a generated hum recording (`e2e/hum.wav`). Landing: real Chrome at 320 / 390 / 768 / 1024 / 1280 / 1920 px. App: the whole journey (welcome → quiz → prefs → reveal → check-in → Today → support → progress → profile → delete) at 390 and 1280 px. Both check: no sideways scroll, nothing cut off, no console errors, tap targets ≥ 44px on phones, axe WCAG 2.1 AA, reduced-motion rendering, keyboard focus, scroll story, FAQ, routes and deep links. Saves screenshots to `e2e/shots/` — look at them; some bugs only show by eye. |
+| `npm run test:e2e` | Night theme on every screen + chat + legal pages (`e2e/night.e2e.py`). Hum coach: Chrome's real audio pipeline with a fake mic playing a generated hum recording (`e2e/hum.wav`). Landing: real Chrome at 320 / 390 / 768 / 1024 / 1280 / 1920 px. App: the whole journey (welcome → quiz → prefs → reveal → check-in → Today → support → progress → profile → delete) at 390 and 1280 px. Both check: no sideways scroll, nothing cut off, no console errors, tap targets ≥ 44px on phones, axe WCAG 2.1 AA, reduced-motion rendering, keyboard focus, scroll story, FAQ, routes and deep links. Saves screenshots to `e2e/shots/` — look at them; some bugs only show by eye. |
 
 When a bug is found by eye, add a check for it to the e2e file so it can't return.

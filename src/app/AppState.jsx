@@ -12,6 +12,7 @@ import * as db from '../lib/db.js';
 import * as auth from '../lib/auth.js';
 import { withProfile, withCheckin, withDone, withSession } from '../lib/userData.js';
 import { todayISO, addDays } from '../lib/format.js';
+import { skyAt } from '../lib/sky.js';
 import { pickToday } from '../engine/pickToday.js';
 import { colorsFor } from '../components/Prana.jsx';
 import practices from '../content/practices.json';
@@ -72,6 +73,7 @@ export function AppProvider({ children }) {
   const value = {
     user, data, date, failed, saveError, retry: () => setAttempt((n) => n + 1),
     loading: user === undefined || (!!user && !data && !failed),
+    idleMood: skyAt(new Date().getHours()) === 'night' ? 'sleepy' : 'idle', // Prana's resting face
     signIn: async () => { const u = await auth.signIn(); if (u) setUser(u); },
     ...actions, ...view,
   };

@@ -26,3 +26,6 @@ export async function signIn() {
 }
 
 export async function signOut() { if (LOCAL_MODE) localStorage.removeItem(KEY); else await supabase.auth.signOut(); }
+
+/** The signed-in user's access token for server calls (chat), or null in preview mode / signed out. */
+export async function getToken() { if (LOCAL_MODE) return null; const { data } = await supabase.auth.getSession(); return data.session?.access_token ?? null; }

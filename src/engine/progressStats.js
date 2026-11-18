@@ -2,7 +2,7 @@
  * FILE: src/engine/progressStats.js
  * PURPOSE: Numbers for the Progress screen (docs/CORE_LOGIC.md §8).
  * INPUT: { checkins: [{date, mood}], completions: [{date}], sessions: [{date, kind, avgHum, steadyRounds, rounds, before, after}], today }
- * OUTPUT: { daysPractised, days[14], moodGroups[14], works, avgHumByWeek, steadyPct }
+ * OUTPUT: { daysPractised, days[14] {date, done, count 0–3}, moodGroups[14], works, avgHumByWeek, steadyPct }
  */
 const DAY = 86400000;
 const iso = (t) => new Date(t).toISOString().slice(0, 10);
@@ -12,7 +12,7 @@ const avg = (xs) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : nul
 export function progressStats({ checkins = [], completions = [], sessions = [], today }) {
   const t0 = Date.parse(today);
   const days = Array.from({ length: 14 }, (_, i) => iso(t0 - (13 - i) * DAY)); // oldest → today
-  const doneDays = new Set(completions.map((c) => c.date));
+  const perDay = {}; completions.forEach((c) => { perDay[c.date] = (perDay[c.date] || 0) + 1; });
   const moodOf = Object.fromEntries(checkins.map((c) => [c.date, MOOD_GROUP[c.mood] ?? null]));
 
   // §8 "what works": average (after − before) per kind, only with ≥ 3 complete pairs
@@ -26,8 +26,8 @@ export function progressStats({ checkins = [], completions = [], sessions = [], 
   const analysed = sessions.filter((s) => s.steadyRounds != null); // timer-only sessions have no steadiness
   const rounds = analysed.reduce((n, s) => n + s.rounds, 0);
   return {
-    days: days.map((d) => ({ date: d, done: doneDays.has(d) })),
-    daysPractised: days.filter((d) => doneDays.has(d)).length,
+    days: days.map((d) => ({ date: d, done: !!perDay[d], count: Math.min(3, perDay[d] || 0) })),
+    daysPractised: days.filter((d) => perDay[d]).length,
     moodGroups: days.map((d) => moodOf[d] ?? null),
     works,
     avgHumByWeek: [1, 0].map((w) => avg(sessions.filter((s) => inWeek(s, w)).map((s) => s.avgHum))), // [last week, this week]

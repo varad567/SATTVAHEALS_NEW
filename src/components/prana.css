@@ -9,14 +9,17 @@
 .prana__l3 { left: 30px; top: 40px; width: 150px; height: 140px; display: flex; align-items: center; justify-content: center; animation: prana-morph 5s ease-in-out infinite reverse; }
 .prana__face { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: prana-look 7s ease-in-out infinite; }
 .prana__eyes { display: flex; gap: 26px; height: 15px; align-items: center; }
-.prana__eyes i { width: 11px; height: 15px; border-radius: 50%; background: var(--plum); animation: prana-blink 4.5s infinite; }
-.prana__mouth { width: 30px; height: 13px; border: 3.5px solid var(--plum); border-top: 0; border-radius: 0 0 30px 30px; }
+.prana__eyes i { width: 11px; height: 15px; border-radius: 50%; background: #35143F; animation: prana-blink 4.5s infinite; }
+.prana__mouth { width: 30px; height: 13px; border: 3.5px solid #35143F; border-top: 0; border-radius: 0 0 30px 30px; }
 /* happy: arched eyes + open smile */
-.prana__face--happy .prana__eyes i { width: 16px; height: 9px; background: none; border: 3.5px solid var(--plum); border-bottom: 0; border-radius: 16px 16px 0 0; animation: none; }
-.prana__face--happy .prana__mouth { width: 34px; height: 17px; border: 0; border-radius: 0 0 34px 34px; background: var(--plum); }
+.prana__face--happy .prana__eyes i { width: 16px; height: 9px; background: none; border: 3.5px solid #35143F; border-bottom: 0; border-radius: 16px 16px 0 0; animation: none; }
+.prana__face--happy .prana__mouth { width: 34px; height: 17px; border: 0; border-radius: 0 0 34px 34px; background: #35143F; }
+/* sleepy (night): heavy lids, small smile */
+.prana__face--sleepy .prana__eyes i { height: 5px; border-radius: 0 0 12px 12px; animation: none; }
+.prana__face--sleepy .prana__mouth { width: 20px; height: 8px; }
 /* humming: closed eyes + small pulsing mouth */
 .prana__face--humming .prana__eyes i { width: 16px; height: 4px; border-radius: 4px; animation: none; }
-.prana__face--humming .prana__mouth { width: 13px; height: 13px; border: 0; border-radius: 50%; background: var(--plum); animation: prana-hum .5s ease-in-out infinite; }
+.prana__face--humming .prana__mouth { width: 13px; height: 13px; border: 0; border-radius: 50%; background: #35143F; animation: prana-hum .5s ease-in-out infinite; }
 
 @keyframes prana-morph { 0%,100% { border-radius: 48% 52% 62% 38% / 44% 56% 44% 56% } 33% { border-radius: 60% 40% 45% 55% / 55% 45% 58% 42% } 66% { border-radius: 40% 60% 55% 45% / 48% 60% 40% 52% } }
 @keyframes prana-morph2 { 0%,100% { border-radius: 55% 45% 40% 60% / 50% 42% 58% 50% } 50% { border-radius: 42% 58% 60% 40% / 58% 50% 50% 42% } }

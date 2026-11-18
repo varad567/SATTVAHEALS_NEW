@@ -4,7 +4,7 @@
  * PROPS:
  *   size   — width in px (height is 0.957 × size). Omit it to size from CSS via --prana-s (1 = 230px).
  *   colors — [backTop, backBottom, front]; front = dominant dosha. Default = all three doshas.
- *   mood   — 'idle' | 'happy' | 'humming'
+ *   mood   — 'idle' | 'happy' | 'humming' | 'sleepy'
  *   popKey — change it to replay the bounce (e.g. after a user action)
  * USED BY: landing sections, every app screen.
  */

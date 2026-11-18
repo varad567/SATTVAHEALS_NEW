@@ -10,12 +10,12 @@ import { dayLabel } from '../lib/format.js';
 import copy from '../content/app.json';
 
 export default function Checkin() {
-  const { mood, setMood, colors, date } = useApp();
+  const { mood, setMood, colors, date, idleMood } = useApp();
   const [pick, setPick] = useState(mood);
   const go = useNavigate();
   const say = pick === 'okay' ? copy.okay.say : copy.moods.find((m) => m.id === pick)?.say ?? copy.checkinAsk;
   return (
-    <Flow prana={{ colors, mood: pick === 'okay' ? 'happy' : 'idle', popKey: pick ?? '' }} say={say}>
+    <Flow prana={{ colors, mood: pick === 'okay' ? 'happy' : idleMood, popKey: pick ?? '' }} say={say}>
       <p className="eyebrow">{dayLabel(date)} · daily check-in</p>
       <h1>How are you feeling <em>today?</em></h1>
       <div className="moods">

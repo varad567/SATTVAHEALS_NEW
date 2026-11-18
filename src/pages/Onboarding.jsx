@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { colorsFor } from '../components/Prana.jsx';
 import { Flow } from '../components/ui.jsx';
+import { Gather } from '../components/art.jsx';
 import { useApp } from '../app/AppState.jsx';
 import { scorePrakriti, DOSHAS } from '../engine/scorePrakriti.js';
 import { cap } from '../lib/format.js';
@@ -24,6 +25,7 @@ export default function Onboarding() {
   const [i, setI] = useState(() => Math.min(answers.length, quiz.length - 1));
   const [step, setStep] = useState(answers.length >= quiz.length ? 'prefs' : 'quiz');
   const [prefs, setPrefs] = useState(data?.profile?.prefs ?? { minutes: 10, diet: 'vegetarian', wake: '06:30' });
+  const [gathered, setGathered] = useState([]); // answers kept for the reveal animation after the draft is cleared
   const [name, setName] = useState(data?.profile?.name ?? user?.name ?? ''); // Google first name, if any
 
   const tally = { vata: 0, pitta: 0, kapha: 0 };
@@ -39,6 +41,7 @@ export default function Onboarding() {
   async function finish(all = answers) {
     await saveProfile({ ...data?.profile, name: name.trim(), prefs, prakriti: scorePrakriti(all) });
     localStorage.removeItem(DRAFT);
+    setGathered(all);
     setStep('reveal');
   }
 
@@ -46,7 +49,7 @@ export default function Onboarding() {
     const p = data.profile.prakriti;
     const blurb = copy.doshaBlurbs[p.label.startsWith('Tridosha') ? 'tridosha' : p.dominant];
     return (
-      <Flow hero prana={{ colors: colorsFor(p), mood: 'happy', popKey: 'reveal' }} say={`${blurb} I've taken your colours.`}>
+      <Flow hero art={<Gather answers={gathered} />} prana={{ colors: colorsFor(p), mood: 'happy', popKey: 'reveal' }} say={`${blurb} I've taken your colours.`}>
         <p className="eyebrow">Your Prakriti</p>
         <h1>{p.label}</h1>
         <div className="card bars">

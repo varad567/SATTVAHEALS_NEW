@@ -3,36 +3,96 @@
  * PURPOSE: Design tokens + base styles. Values are fixed by docs/DESIGN.md §1 — change them there first.
  */
 :root {
-  --cream: #FBF7EF; --lav-1: #EDE5F3; --lav-2: #C4B1D8; --purple: #765387;
-  --plum: #35143F; --gold: #EAA459; --white: #FFFFFF; --muted: #5a3d66;
-  --danger: #9b2c2c; --line: #35143F14;
+  /* Palette (DESIGN §1) */
+  --cream: #FBF7EF; --lav-1: #EDE5F3; --lav-2: #C4B1D8; --gold: #EAA459; --white: #FFFFFF; --peach: #FBEBD6;
+  --brand-plum: #35143F; /* fixed: text on gold/cream bubbles, Prana's face */
+  /* Roles — screens use these, so night mode only has to change them here */
+  --ink: #35143F;            /* text */
+  --muted: #5a3d66;          /* secondary text */
+  --accent: #765387;         /* accent text, italic words, eyebrows */
+  --accent-fill: #765387;    /* selected/filled states with light text on top */
+  --deep: #35143F;           /* dark surfaces: primary buttons, mantra card, hum screen */
+  --deep-hover: #765387;
+  --on-deep: #FBF7EF;        /* text on dark surfaces */
+  --on-deep-2: #d6bee9;      /* secondary text on dark surfaces */
+  --line: #35143F14; --line-strong: #35143F33;
+  --danger: #9b2c2c;
+  --sky: none;               /* top-of-page wash; changes with time of day (lib/sky.js) */
+
   --font-head: 'Newsreader', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
   --font-deva: 'Noto Serif Devanagari', serif;
+  /* 8-point spacing + type scale — use these instead of raw px */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+  --t-xs: 12px; --t-sm: 14px; --t-md: 16px; --t-lg: 20px; --t-xl: 28px; --t-2xl: 40px;
   --r-card: 24px; --r-chip: 18px; --r-pill: 40px;
   --gutter: clamp(16px, 5vw, 64px);
 }
+/* Sky (DESIGN §3): a soft wash at the top of the page that follows the clock. Day stays plain cream. */
+html[data-sky="dawn"] { --sky: linear-gradient(180deg, #FCE3CF 0, var(--cream) 420px); }
+html[data-sky="dusk"] { --sky: linear-gradient(180deg, #E6D6F0 0, var(--cream) 420px); }
+/* Night mode: after dark, or whenever the phone is set to dark mode. */
+html[data-theme="night"] {
+  --cream: #1C0A22; --lav-1: #33173F; --white: #2A1232; --peach: #3A2218;
+  --ink: #F3ECF7; --muted: #CBB8D6; --accent: #D3B4EA; --accent-fill: #7D4C97;
+  --deep: #4A1F5A; --deep-hover: #5E2A70; --on-deep: #FBF7EF; --on-deep-2: #E3D2EF;
+  --line: #FFFFFF1A; --line-strong: #FFFFFF38; --danger: #F2A3A3;
+  --sky: linear-gradient(180deg, #2B0F35 0, var(--cream) 520px);
+  color-scheme: dark;
+}
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--cream); color: var(--plum); font: 16px/1.6 var(--font-body); overflow-x: hidden; }
+body { margin: 0; background: var(--sky) no-repeat fixed var(--cream); transition: background-color .6s; color: var(--ink); font: var(--t-md)/1.6 var(--font-body); overflow-x: hidden; }
 h1, h2, h3 { font-family: var(--font-head); font-weight: 400; letter-spacing: -0.035em; line-height: 1.05; margin: 0; text-wrap: balance; }
-h1 em, h2 em, h3 em { color: var(--purple); }
+h1 em, h2 em, h3 em { color: var(--accent); }
 p { margin: 0; text-wrap: pretty; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
 
-.eyebrow { font-size: 11px; letter-spacing: 2.3px; text-transform: uppercase; font-weight: 600; color: var(--purple); }
-.btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px;
-  padding: 0 26px; border: 0; border-radius: var(--r-pill); background: var(--plum); color: var(--cream);
-  font: 500 15px var(--font-body); text-decoration: none; cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; }
-.btn:hover { background: var(--purple); box-shadow: 0 8px 20px -10px var(--plum); }
+.eyebrow { font-size: var(--t-xs); letter-spacing: 2.3px; text-transform: uppercase; font-weight: 600; color: var(--accent); }
+.btn { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--s4); min-height: 56px;
+  padding: 0 var(--s5); border: 0; border-radius: var(--r-pill); background: var(--deep); color: var(--on-deep);
+  font: 500 var(--t-md) var(--font-body); text-decoration: none; cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; }
+.btn:hover { background: var(--deep-hover); box-shadow: 0 8px 20px -10px #35143F; }
 .btn:active { transform: scale(.97); }
 .btn span { transition: translate .2s; }
 .btn:hover span { translate: 4px 0; }
-.btn--ghost { background: transparent; color: var(--plum); border: 1.5px solid #35143F33; }
+.btn--ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line-strong); }
 .btn--ghost:hover { background: var(--lav-1); box-shadow: none; }
-.btn--gold { background: var(--gold); color: var(--plum); }
+.btn--gold { background: var(--gold); color: var(--brand-plum); }
 .btn--gold:hover { background: #f0b676; }
+
+/* Legal pages */
+.legal { width: min(720px, 100%); margin-inline: auto; padding: var(--s7) var(--s5) var(--s8); display: grid; gap: var(--s3); }
+.legal h1 { font-size: var(--t-2xl); } .legal h2 { font-size: var(--t-lg); margin-top: var(--s4); }
+.legal__intro { font-size: var(--t-lg); } .legal__back { justify-self: start; min-height: 44px; display: inline-flex; align-items: center; font-weight: 600; text-decoration: none; }
+.legal__nav { display: flex; gap: var(--s5); margin-top: var(--s5); } .legal__nav a { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* Prana chat (components/ChatWidget.jsx) — on every page */
+.chat-fab { position: fixed; right: var(--s4); bottom: var(--s4); z-index: 40; width: 64px; height: 64px; border-radius: 50%; border: 0; display: grid; place-items: center; background: var(--white); box-shadow: 0 10px 30px -12px #35143F99; cursor: pointer; }
+body:has(.nav) .chat-fab { bottom: 92px; }
+body:has(.hum) .chat-fab, body:has(.hum) .chat { display: none; } /* no distractions while humming */
+.chat { position: fixed; z-index: 45; inset: auto var(--s3) 96px; max-height: min(620px, 78svh); display: flex; flex-direction: column; border-radius: var(--r-card); background: var(--cream); border: 1.5px solid var(--line); box-shadow: 0 24px 60px -20px #35143F88; overflow: hidden; animation: chat-in .25s ease-out; }
+body:has(.nav) .chat { bottom: 168px; }
+@keyframes chat-in { from { opacity: 0; translate: 0 12px; } }
+.chat__head { display: flex; align-items: center; gap: var(--s3); padding: var(--s3) var(--s4); background: var(--lav-1); }
+.chat__head div { flex: 1; display: grid; } .chat__head span { font-size: var(--t-xs); color: var(--muted); }
+.chat__list { flex: 1; overflow-y: auto; padding: var(--s4); display: flex; flex-direction: column; gap: var(--s2); }
+.chat__msg { max-width: 85%; padding: var(--s2) var(--s3); border-radius: var(--r-chip); font-size: var(--t-sm); line-height: 1.45; }
+.chat__msg--prana { align-self: flex-start; background: var(--white); border: 1.5px solid var(--line); border-bottom-left-radius: 6px; }
+.chat__msg--you { align-self: flex-end; background: var(--accent-fill); color: var(--on-deep); border-bottom-right-radius: 6px; }
+.chat__msg--crisis { border-color: var(--gold); display: grid; gap: var(--s2); }
+.chat__msg--crisis a { justify-self: start; padding: var(--s2) var(--s4); border-radius: var(--r-pill); background: var(--gold); color: var(--brand-plum); font-weight: 600; text-decoration: none; }
+.chat__typing { display: flex; gap: 4px; } .chat__typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: typing 1s infinite; }
+.chat__typing i:nth-child(2) { animation-delay: .15s; } .chat__typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes typing { 50% { opacity: .3; translate: 0 -3px; } }
+.chat__chips { display: flex; flex-wrap: wrap; gap: var(--s2); padding: 0 var(--s4) var(--s3); }
+.chat__chips button { min-height: 44px; padding: 0 var(--s3); border-radius: var(--r-pill); border: 1.5px solid var(--line-strong); background: var(--white); color: var(--ink); font: var(--t-sm) var(--font-body); cursor: pointer; }
+.chat__form { display: flex; gap: var(--s2); padding: var(--s3) var(--s4) var(--s2); border-top: 1px solid var(--line); }
+.chat__form input { flex: 1; min-height: 48px; padding: 0 var(--s3); border-radius: 14px; border: 1.5px solid var(--line-strong); background: var(--white); color: var(--ink); font: var(--t-md) var(--font-body); }
+.chat__form .btn { min-height: 48px; padding: 0 var(--s4); justify-content: center; }
+.chat__notice { margin: 0; padding: 0 var(--s4) var(--s3); font-size: var(--t-xs); color: var(--muted); }
+@media (min-width: 900px) { .chat { inset: auto var(--s5) 96px auto; width: 380px; } body:has(.nav) .chat-fab { bottom: var(--s4); } body:has(.nav) .chat { bottom: 96px; } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

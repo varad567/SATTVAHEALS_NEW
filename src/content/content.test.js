@@ -10,6 +10,8 @@ import practices from './practices.json';
 import quiz from './quiz.json';
 import reasons from './reasons.json';
 import humTips from './humTips.json';
+import legal from './legal.json';
+import app from './app.json';
 
 const BANNED = /\b(treat|treats|treating|treatment|cure|cures|cured|curing|heals?|healing|diagnos\w*|therap(y|ies|eutic)|disorders?|symptoms?|patients?)\b/i;
 // A banned word is allowed only right after a negation, e.g. "does not diagnose", "not a medical service".
@@ -28,6 +30,10 @@ describe('Content shape', () => {
   it('every FAQ has a question, an answer and match keys', () => {
     expect(faq.length).toBeGreaterThanOrEqual(6);
     faq.forEach((f) => { expect(f.q.trim()).toMatch(/\?$/); expect(f.a.length).toBeGreaterThan(20); expect(f.keys.length).toBeGreaterThan(0); });
+  });
+  it('FAQ keys are specific (vague words make ordinary questions match by accident)', () => {
+    const vague = ['who', 'what', 'how', 'help', 'keep', 'recommend', 'today', 'use', 'app'];
+    faq.forEach((f) => f.keys.forEach((k) => expect(vague).not.toContain(k)));
   });
   it('FAQ questions are unique', () => expect(new Set(faq.map((f) => f.q)).size).toBe(faq.length));
   it('story steps use valid colours and moods', () => {
@@ -92,7 +98,7 @@ describe('Compliance wording (CONTEXT §5)', () => {
     expect(violations('Prana heals you')).toEqual(['heals']);
   });
   it('no banned words in any content JSON (data keys excluded)', () => {
-    const all = [...strings(faq, ['keys']), ...strings(landing), ...strings(practices, ['id', 'reasonKey', 'humKind', 'module', 'diet', 'doshas', 'moods']), ...strings(quiz), ...strings(reasons), ...strings(humTips)];
+    const all = [...strings(faq, ['keys']), ...strings(landing), ...strings(practices, ['id', 'reasonKey', 'humKind', 'module', 'diet', 'doshas', 'moods']), ...strings(quiz), ...strings(reasons), ...strings(humTips), ...strings(legal), ...strings(app)];
     expect(all.flatMap(violations)).toEqual([]);
   });
   it('no banned words in JSX text anywhere in src/', () => {

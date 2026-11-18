@@ -1,0 +1,28 @@
+{
+  "updated": "18 November 2026",
+  "contact": "CONTACT_EMAIL_PLACEHOLDER",
+  "privacy": {
+    "title": "Privacy policy",
+    "intro": "Sattva Heals is a free wellbeing app. This page explains, in plain words, what we keep, why, and how to remove it.",
+    "sections": [
+      { "h": "What we keep", "p": ["Your first name and Google account ID (to sign you in).", "Your Prakriti result and preferences: time per day, diet and wake-up time.", "Your daily mood check-ins and which practices you marked done.", "Hum session numbers only: rounds, average hum length, average breath, steady rounds and your optional before/after taps (1–5)."] },
+      { "h": "What we never keep", "p": ["Microphone audio. The hum coach measures your hum on your own device; no sound is recorded, stored or sent.", "Chat messages. Your chat history stays in your browser tab and is cleared when you close it."] },
+      { "h": "Prana chat and Google Gemini", "p": ["Many chat answers are given directly in your browser. Questions about using the app that Prana can't answer from its FAQ are sent to Google's Gemini API, without your name, email or any account ID.", "We use Gemini's free tier. Under Google's terms for that tier, Google may use those messages to improve its products, and human reviewers may read them. Please don't share personal, health or sensitive details in chat. Messages about how you feel, emergencies, or containing personal details are never sent to Gemini."] },
+      { "h": "Where your data lives", "p": ["Account data is stored with Supabase, our database provider, protected so each account can only reach its own records. The site is hosted on Vercel."] },
+      { "h": "Delete everything", "p": ["Profile → Delete my data removes your account and every record linked to it, permanently. You can also ask us to do it by email."] },
+      { "h": "Age", "p": ["Sattva Heals is for people aged 18 or over."] },
+      { "h": "Changes and contact", "p": ["If this policy changes, we'll update this page and the date above. Questions: write to us at the email below."] }
+    ]
+  },
+  "terms": {
+    "title": "Terms of use",
+    "intro": "By using Sattva Heals you agree to these terms. They are short on purpose.",
+    "sections": [
+      { "h": "A wellbeing companion, not medical care", "p": ["Sattva Heals offers everyday practices from Indian Knowledge Systems — daily routine, food and sound. It does not diagnose, and it is not a substitute for professional care or emergency services.", "If you are struggling, please contact a professional. In India, Tele-MANAS is free on 14416. In an emergency, call 112."] },
+      { "h": "Who can use it", "p": ["You must be 18 or over. Everything is free."] },
+      { "h": "Your part", "p": ["Choose practices that feel right for your body; skip anything that doesn't. Check with a doctor before changing your diet if you have a health condition or allergy.", "Use Prana chat only for help with the app. Attempts to misuse it may pause chat on your account."] },
+      { "h": "Our part", "p": ["We try to keep the app working and your data safe, but we provide it as it is, without guarantees. We may change or pause features."] },
+      { "h": "Law", "p": ["These terms are governed by the laws of India."] }
+    ]
+  }
+}

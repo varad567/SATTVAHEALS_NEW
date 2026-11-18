@@ -61,6 +61,26 @@
 
 **Reduced motion**: `prefers-reduced-motion` turns every animation off; content stays visible.
 
+## 3b. Creative layer (components/art.jsx) and sky
+
+| Piece | Where | Rule |
+|---|---|---|
+| Hum mandala | hum session + summary keepsake | one ring of 8 petals per round, outside Prana; size = hum length, fullness = steadiness |
+| Garden | Progress | one 5-petal flower per practised day; bigger + more colours with more practices; seed = no practice |
+| Becoming you | Prakriti reveal | one small blob per quiz answer drifts in and merges into Prana |
+| Celebration | Today | floating blobs only when the 3rd card is ticked now (not when reopening a finished day) |
+| Bloom + haptic | tick button | ring blooms once; 12 ms vibration on Android when marking done |
+| Route transition | every app screen | soft rise-in |
+| Skeleton | loading | shimmering placeholder shapes |
+| Sleepy Prana | night hours | heavy lids when idle |
+
+**Sky** (`lib/sky.js`): dawn 05–08 peach wash, day 08–17 plain, dusk 17–20 lavender wash, night 20–05.
+**Night theme** = night hours **or** the phone's dark mode. Colours are role tokens (`--ink`, `--deep`,
+`--on-deep`, `--accent`, `--accent-fill` …) in `tokens.css`; night only redefines them. Text on gold and
+Prana's face use fixed `--brand-plum`. **Spacing** uses the 8-point scale `--s1…--s8`; **text** uses
+`--t-xs…--t-2xl`; only fluid headline sizes use `clamp()`.
+Decorative overflow inside cards must use `overflow: clip`, never `hidden` (hidden is still scrollable — found in testing).
+
 ## 4. Screens (mobile, as prototyped)
 
 1. **Welcome** — Prana (all colours) + "Hi, I'm Prana" bubble, headline, Google button, free/disclaimer line.

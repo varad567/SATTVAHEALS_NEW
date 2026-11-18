@@ -4,6 +4,7 @@
  *   Hum stats appear only once there is a hum session, so new users see no empty "—" boxes.
  */
 import Prana from '../components/Prana.jsx';
+import { Flower } from '../components/art.jsx';
 import { useApp } from '../app/AppState.jsx';
 import { progressStats } from '../engine/progressStats.js';
 
@@ -19,8 +20,9 @@ export default function Progress() {
     <div className="page page--grid">
       <header className="page__head"><p className="eyebrow">Last 14 days</p><h1>Your <em>rhythm</em></h1></header>
       <section className="card card--lav">
-        <div className="card__row"><h2 className="h-card">Days practised</h2><span>{s.daysPractised} of 14</span></div>
-        <div className="days">{s.days.map((d) => <i key={d.date} className={d.done ? 'on' : undefined} title={d.date} />)}</div>
+        <div className="card__row"><h2 className="h-card">Your garden</h2><span>{s.daysPractised} of 14 days</span></div>
+        <div className="garden" role="img" aria-label={`${s.daysPractised} of the last 14 days practised`}>{s.days.map((d) => <Flower key={d.date} count={d.count} />)}</div>
+        <p className="small">{s.daysPractised ? 'A flower for each day you practise — more practices, more petals.' : 'Your garden grows a flower each day you practise.'}</p>
       </section>
       <section className="card card--plum works">
         <Prana size={90} colors={colors} mood={works.length ? 'happy' : 'idle'} />

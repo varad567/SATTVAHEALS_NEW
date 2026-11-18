@@ -58,6 +58,9 @@ with sync_playwright() as p:
         page.get_by_role("button", name="Show my 3 practices").click()
         page.locator(".pcard").first.wait_for()
         page.locator(".pcard__main").nth(2).click(); page.locator(".tick").first.click()
+        # found by eye: with overflow:hidden the decorative corner blob made cards sideways-scrollable, so focus/clicks shifted the text
+        shifted = page.evaluate("[...document.querySelectorAll('.pcard')].map(c => (c.scrollLeft = 36, c.scrollLeft)).filter(x => x !== 0)")
+        check(not shifted, f"{w}: cards can't be scrolled sideways (text never shifts) {shifted}")
         audit(page, w, "6-today", errors)
         check(page.get_by_text("one done").count() == 1, f"{w}: ticking a card updates Prana")
         page.get_by_role("button", name="Need more support").click()
@@ -88,6 +91,10 @@ with sync_playwright() as p:
         page.get_by_role("link", name="Progress").click(); page.get_by_text("Your").first.wait_for()
         audit(page, w, "8-progress", errors)
         page.get_by_role("link", name="Profile").click(); page.get_by_text("Retake").wait_for()
+        if w < 500:  # found in review: last items could sit under the bottom nav / chat bubble
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)"); page.wait_for_timeout(300)
+            gap = page.evaluate("document.querySelector('.nav').getBoundingClientRect().top - document.querySelector('.link--danger').getBoundingClientRect().bottom")
+            check(gap >= 72, f"{w}: last item clears the nav and chat bubble ({gap:.0f}px)")
         audit(page, w, "9-profile", errors)
         page.get_by_role("button", name="Delete my data").click()
         audit(page, w, "10-delete", errors)

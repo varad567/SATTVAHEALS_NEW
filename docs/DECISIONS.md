@@ -8,6 +8,20 @@
 
 ## 18 Nov 2026
 
+**D-35. Creative layer:** hum mandala, progress garden, becoming-you reveal, celebration, bloom + haptic,
+route transitions, skeletons, sleepy night Prana. **Rejected:** per-practice line icons and decorative
+Sanskrit labels on cards (read as a generic AI template).
+
+**D-36. Sky and night are one feature.** Night theme = night hours or phone dark mode. Built on role
+tokens so night only redefines tokens; nothing in the screens knows about themes.
+
+**D-37. Chat answers in the browser first.** Crisis, feelings, personal details, misuse and FAQ answers
+never leave the device; only plain app questions from signed-in users reach the server/Gemini. The
+server re-checks everything. FAQ keys must be specific words (tested).
+
+**D-38. Legal pages are real content** (`content/legal.json`), including the Gemini free-tier disclosure.
+Contact email is a placeholder until chosen.
+
 **D-31. One set of change functions for every store** (`lib/userData.js`). The local store saves
 with them; after a Supabase write succeeds the screen applies the same function — so local and
 cloud can't drift, and nothing is re-downloaded after each tap. If a write fails, the screen does

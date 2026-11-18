@@ -18,6 +18,11 @@ describe('progressStats', () => {
     expect(r.days[0].date).toBe('2026-11-05');
     expect(r.days[13].date).toBe(today);
     expect(r.daysPractised).toBe(2); // 05 and 18 (18 counted once)
+    expect(r.days[13].count).toBe(2); // two practices on the 18th → a 2-petal flower
+    expect(r.days[0].count).toBe(1);
+  });
+  it('flower petals cap at 3 even with odd data', () => {
+    expect(progressStats({ today, completions: Array(5).fill({ date: today }) }).days[13].count).toBe(3);
   });
   it('window crosses a month boundary correctly', () => {
     expect(progressStats({ today: '2026-12-03' }).days[0].date).toBe('2026-11-20');

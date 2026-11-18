@@ -5,6 +5,7 @@
 import { useEffect, useRef } from 'react';
 import Prana from './Prana.jsx';
 import copy from '../content/app.json';
+import './ui.css';
 
 export const Bubble = ({ children }) => <p className="bubble" aria-live="polite">{children}</p>;
 
@@ -13,10 +14,10 @@ export const Bubble = ({ children }) => <p className="bubble" aria-live="polite"
  * Phone: Prana + bubble in a row above the content (hero = big and centred instead).
  * Desktop: split screen — Prana large in a lavender panel on the left, content on the right (DESIGN §6).
  */
-export function Flow({ prana, say, hero = false, children }) {
+export function Flow({ prana, say, hero = false, art = null, children }) {
   return (
     <div className={`flow${hero ? ' flow--hero' : ''}`}>
-      <aside className="flow__guide"><Prana {...prana} /><Bubble>{say}</Bubble></aside>
+      <aside className="flow__guide"><div className="flow__prana">{art}<Prana {...prana} /></div><Bubble>{say}</Bubble></aside>
       <main className="flow__body">{children}</main>
     </div>
   );

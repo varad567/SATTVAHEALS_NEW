@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useApp } from './AppState.jsx';
+import './shell.css';
 
 const ICONS = {
   Today: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5" /></>,

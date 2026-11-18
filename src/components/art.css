@@ -1,0 +1,30 @@
+/* FILE: src/components/art.css — creative layer (components/art.jsx) + route transition. */
+.route { animation: route-in .35s ease-out; }
+@keyframes route-in { from { opacity: 0; translate: 0 8px; } }
+.flow__prana { position: relative; display: grid; place-items: center; }
+.mandala { position: absolute; width: 340px; height: 340px; pointer-events: none; }
+.mandala g { opacity: .92; }
+.ring-empty { fill: none; stroke: var(--on-deep-2); stroke-width: 1.2; stroke-dasharray: 2 5; opacity: .45; }
+.hum:not(.hum--dark) .ring-empty { stroke: var(--accent); }
+.ring-new { animation: ring-in 1s cubic-bezier(.3,1.3,.5,1); transform-origin: 0 0; }
+@keyframes ring-in { from { scale: .6; opacity: 0; rotate: -20deg; } }
+@keyframes petal-grow { from { scale: .1 .1; opacity: 0; } }
+.garden { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--s1) var(--s2); padding: var(--s2) 0 var(--s3); border-bottom: 3px solid var(--line-strong); border-radius: 0 0 12px 12px; }
+.flower { width: 100%; aspect-ratio: 1; overflow: visible; }
+.flower--on { animation: petal-grow .8s cubic-bezier(.3,1.4,.5,1) both; transform-origin: 50% 50%; }
+.seed { fill: var(--line-strong); }
+.celebrate { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
+.celebrate i { position: absolute; bottom: -40px; left: var(--x); width: calc(34px * var(--s)); aspect-ratio: 1.1; border-radius: 48% 52% 62% 38% / 44% 56% 44% 56%; opacity: 0; animation: float-up 2.4s ease-out var(--d) forwards; }
+@keyframes float-up { 0% { opacity: 0; translate: 0 0; } 15% { opacity: .9; } 100% { opacity: 0; translate: 20px -85vh; rotate: 120deg; } }
+.gather { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.gather i { position: absolute; width: 22px; aspect-ratio: 1.1; border-radius: 48% 52% 62% 38% / 44% 56% 44% 56%; opacity: 0; animation: gather 1.1s cubic-bezier(.5,0,.3,1) var(--d) both; }
+@keyframes gather { 0% { opacity: 0; translate: var(--x) var(--y); } 20% { opacity: 1; } 85% { opacity: .9; translate: 0 0; scale: 1; } 100% { opacity: 0; translate: 0 0; scale: .3; } }
+.flow--hero .prana__pop { animation-delay: .9s; animation-fill-mode: both; }
+.tick { position: relative; }
+.tick[aria-pressed="true"]::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--c); animation: bloom .6s ease-out forwards; }
+@keyframes bloom { from { opacity: .9; scale: .8; } to { opacity: 0; scale: 1.6; } }
+.skeleton { width: min(560px, 100%); margin-inline: auto; padding: var(--s7) var(--s5); display: grid; gap: var(--s4); }
+.sk { display: block; border-radius: var(--r-card); background: linear-gradient(90deg, var(--lav-1) 0, var(--white) 50%, var(--lav-1) 100%) 0 0 / 200% 100%; animation: shimmer 1.4s linear infinite; }
+.sk--title { height: 40px; width: 60%; border-radius: 12px; } .sk--panel { height: 120px; } .sk--card { height: 110px; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+

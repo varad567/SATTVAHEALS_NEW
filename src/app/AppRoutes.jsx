@@ -2,10 +2,11 @@
  * FILE: src/app/AppRoutes.jsx
  * PURPOSE: Routes under /app and the Flow 1 gate: signed in? → profile? → checked in today? → Today.
  */
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AppProvider, useApp } from './AppState.jsx';
 import Shell from './Shell.jsx';
 import Prana from '../components/Prana.jsx';
+import { Skeleton } from '../components/art.jsx';
 import Welcome from '../pages/Welcome.jsx';
 import Onboarding from '../pages/Onboarding.jsx';
 import Checkin from '../pages/Checkin.jsx';
@@ -21,7 +22,7 @@ function Guard({ need, children }) {
   const { user, loading, failed, retry, data, mood } = useApp();
   if (user === null) return <Welcome />;
   if (failed) return <main className="screen screen--center" role="alert"><Prana size={120} /><h1>Couldn't load your data</h1><p>Check your connection and try again.</p><button type="button" className="btn" onClick={retry}>Try again <span aria-hidden="true">→</span></button></main>;
-  if (loading) return <main className="screen screen--center" aria-busy="true"><Prana size={120} /><p>Prana is getting ready…</p></main>;
+  if (loading) return <Skeleton />;
   if (need !== 'user' && !data.profile) return <Navigate to="/app/onboarding" replace />;
   if (need === 'checkin' && !mood) return <Navigate to="/app/checkin" replace />;
   return children;
@@ -33,8 +34,10 @@ function Start() {
 }
 
 export default function AppRoutes() {
+  const { pathname } = useLocation();
   return (
     <AppProvider>
+      <div key={pathname} className="route">{/* re-keyed per screen → a soft entrance on every navigation */}
       <Routes>
         <Route index element={<Guard need="user"><Start /></Guard>} />
         <Route path="onboarding" element={<Guard need="user"><Onboarding /></Guard>} />
@@ -45,6 +48,7 @@ export default function AppRoutes() {
         <Route path="hum/:id" element={<Guard need="profile"><Hum /></Guard>} />
         <Route path="*" element={<Soon title="Page not found" notFound />} />
       </Routes>
+      </div>
     </AppProvider>
   );
 }

@@ -4,7 +4,7 @@
 > It tells you what Sattva Heals is, where everything lives, and the rules you must follow.
 > If this file disagrees with any other doc, this file wins until it is updated.
 
-**Last updated:** 18 Nov 2026 · **Owner:** Varad Bidwai · **Status:** landing, app, hum coach and Supabase layer built and tested; chat + deploy next
+**Last updated:** 18 Nov 2026 · **Owner:** Varad Bidwai · **Status:** v1 feature-complete and tested (landing, app, hum coach, creative layer, night mode, chat, legal). Waiting for keys + deploy — see docs/PENDING.md
 
 ---
 
@@ -35,6 +35,7 @@ screen, and a **Prana chat** answers questions about using the app. The site liv
 | 4 | `docs/DESIGN.md` | Theme, screens, user flow, motion |
 | 5 | `docs/ARCHITECTURE.md` | Stack, folders, database tables, coding conventions |
 | 6 | `docs/DECISIONS.md` | Every settled choice and why — check before re-debating anything |
+| 7 | `docs/PENDING.md` | What's left before and after launch |
 
 Visual source of truth: the prototype canvas linked at the top of `docs/DESIGN.md`.
 

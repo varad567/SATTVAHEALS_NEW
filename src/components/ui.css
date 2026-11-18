@@ -1,0 +1,14 @@
+/* FILE: src/components/ui.css — Sheet (modal) and SupportSheet helplines (components/ui.jsx). */
+.sheet { position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-end; justify-content: center; background: #35143F66; animation: fade .2s; }
+@keyframes fade { from { opacity: 0; } }
+.sheet__box { width: min(520px, 100%); max-height: 90svh; overflow: auto; padding: var(--s5) var(--s5) var(--s6); border-radius: 28px 28px 0 0; background: var(--cream); display: grid; gap: var(--s4); animation: rise .3s ease-out; }
+.sheet__box h2 { font-size: var(--t-xl); }
+.sheet__box > .btn--ghost { justify-content: center; }
+.helpline { display: flex; justify-content: space-between; align-items: center; gap: var(--s3); padding: var(--s4) var(--s4); border-radius: var(--r-chip); background: var(--lav-1); text-decoration: none; }
+.helpline span { display: grid; } .helpline small { color: var(--muted); }
+.helpline b { font: 400 var(--t-xl) var(--font-head); }
+
+@media (min-width: 900px) {
+  .sheet { align-items: center; }
+  .sheet__box { border-radius: 28px; }
+}

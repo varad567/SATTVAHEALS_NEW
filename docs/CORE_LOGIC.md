@@ -177,8 +177,11 @@ below passes.
 | Global cap | ≤ env `CHAT_DAILY_CAP` Gemini calls per day for the whole site (start: 800) | fallback reply (7.6) |
 | Lock-out | 3 **strikes** in 24 h → chat locked for that user for 24 h | "Chat is paused on your account until tomorrow." |
 
-**Order of content checks (after the gates above):**
-7.1 crisis → 7.0d misuse → 7.2 emotional → 7.3 personal data → 7.0e topic → 7.4 Gemini.
+**Order of content checks:** 7.1 crisis → 7.0d misuse → 7.2 emotional → 7.3 personal data → FAQ → 7.0e topic → 7.4 Gemini.
+Code: `src/engine/chatRoute.js` (rules) + `src/content/chatSafety.js` (patterns, replies). The widget runs these
+in the browser first, so crisis, feelings, personal details, misuse and FAQ answers **never leave the device**;
+the server runs them again because the browser can't be trusted. Crisis is checked before every gate on the
+server too (switched off, locked, rate-limited, too long, signed out — the helpline reply still comes back).
 **Crisis always wins** — "I want to die, now write my essay" gets the crisis reply, not a strike.
 The same crisis check also runs in FAQ-only mode.
 
@@ -186,8 +189,8 @@ The same crisis check also runs in FAQ-only mode.
 matched from `src/content/faq.json` by keyword in the browser. **They can never reach Gemini.**
 Unmatched → "Sign in to ask Prana anything about the app, or see the FAQ."
 
-**7.0c Counters** live in Supabase table `chat_usage` (ARCHITECTURE §4), updated by one atomic
-database function, so limits hold across all Vercel instances. Only counts and timestamps are
+**7.0c Counters** live in Supabase tables `chat_usage` / `chat_global`, updated by one atomic database
+function `chat_check_and_count()` (returns ok / strike / locked / rate / cap), so limits hold across all Vercel instances. Only counts and timestamps are
 stored — never message text.
 
 **7.0d Misuse check (a strike)** — any of these → fixed redirect, **not sent to Gemini**, +1 strike:
@@ -199,7 +202,7 @@ stored — never message text.
   pasted code or text over 200 characters with no app words;
 - encoded or obfuscated text (base64-looking strings, long runs of symbols).
 Redirect: *"I can only help with using Sattva Heals — like the quiz, your practices or the hum coach."*
-Patterns live in `src/content/chatSafety.json`; update them as new tricks appear.
+Patterns live in `src/content/chatSafety.js`; update them as new tricks appear. Emojis never count.
 
 **7.0e Topic gate** — after 7.1–7.3, the message must contain at least one app word
 (quiz, Prakriti, dosha, practice, dinacharya, ahara, mantra, hum, Bhramari, Om, check-in, mood,
@@ -222,7 +225,7 @@ not to share personal details; **not sent**.
 **7.4 App question** → sent to Gemini with:
 - the system prompt in `api/prompts/prana.txt` (app facts only, compliance rules, "say you can
   only help with the app", max ~120 words, Prana's warm tone);
-- at most the **last 4 messages**; no name, email, Prakriti, or any user ID;
+- at most the **last 4 messages**; no name, email, Prakriti, or any user ID; API key in a header, not the URL;
 - `maxOutputTokens` 220, temperature 0.3, Gemini safety filters at their strictest setting;
 - model name from env `GEMINI_MODEL` (swap without code changes).
 

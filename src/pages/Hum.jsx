@@ -10,6 +10,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Prana from '../components/Prana.jsx';
 import { Bubble, Sheet } from '../components/ui.jsx';
 import { Scale, Meters, Stats, nextTip } from '../components/hum.jsx';
+import { Mandala } from '../components/art.jsx';
 import { useApp } from '../app/AppState.jsx';
 import { useMic } from '../hooks/useMic.js';
 import { createDetector, isNoisy, pickTip, summarize, canSave, median } from '../engine/hum/coach.js';
@@ -17,6 +18,7 @@ import { cap } from '../lib/format.js';
 import practices from '../content/practices.json';
 import tips from '../content/humTips.json';
 import copy from '../content/app.json';
+import './hum.css';
 
 const H = copy.hum;
 
@@ -95,6 +97,7 @@ export default function Hum() {
 
       <div className="hum__guide">
         <div className="hum__prana" style={{ transform: `scale(${live.humming ? Math.min(1.25, 1 + live.secs * 0.025) : 1})` }}>
+          {(dark || step === 'summary') && <Mandala slots={total} rounds={rounds} kind={kind} colors={colors} />}
           {live.humming && <><i className="ring" /><i className="ring ring--2" /></>}
           <Prana size={dark ? 170 : 130} colors={colors} mood={live.humming ? 'humming' : step === 'summary' ? 'happy' : 'idle'} popKey={rounds.length} />
         </div>
@@ -134,6 +137,7 @@ export default function Hum() {
       {step === 'summary' && (
         <section className="hum__body">
           <h1>{rounds.length} rounds, <em>well done.</em></h1>
+          <p className="small center">Your mandala from this session — longer, steadier hums make fuller petals.</p>
           <Stats s={summarize(rounds)} />
           <Scale label="How settled do you feel now?" value={after} onPick={setAfter} />
           {before && after && <p className="card card--plum">{H.after[after > before ? 'better' : after === before ? 'same' : 'worse'].replace('{n}', `${after - before} point${after - before > 1 ? 's' : ''}`)}</p>}

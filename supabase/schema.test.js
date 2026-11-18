@@ -20,7 +20,7 @@ beforeAll(async () => {
   await pg.exec(`
     create schema auth; create table auth.users (id uuid primary key);
     create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
-    create role authenticated; grant usage on schema public, auth to authenticated;
+    create role authenticated; create role service_role; grant usage on schema public, auth to authenticated, service_role;
     grant execute on function auth.uid() to authenticated;
     insert into auth.users values ('${A}'), ('${B}');`);
   await pg.exec(readFileSync('supabase/schema.sql', 'utf8'));
@@ -79,5 +79,62 @@ describe('Delete my data', () => {
       expect(left, t).toBe(0);
     }
     expect((await rows(B, 'profiles'))[0].name).toBe('Ben');
+  });
+});
+
+describe('Chat limits (chat_check_and_count)', () => {
+  const C = '00000000-0000-0000-0000-00000000000c';
+  const check = async (strike = false, gemini = true, cap = 800) => {
+    await pg.exec('reset role'); // the server calls this as the service role
+    return (await pg.query('select public.chat_check_and_count($1, $2, $3, $4) as r', [C, strike, gemini, cap])).rows[0].r;
+  };
+  beforeEach(async () => { await pg.exec(`reset role; insert into auth.users values ('${C}') on conflict do nothing; delete from public.chat_usage; delete from public.chat_global;`); });
+
+  it('the browser can\u2019t call it or read the counters', async () => {
+    await expect(as(C, "select public.chat_check_and_count($1, false, true, 800)", [C])).rejects.toThrow(/permission denied/);
+    expect(await rows(C, 'chat_usage')).toEqual([]);
+  });
+  it('10 messages per 10 minutes, then "rate"', async () => {
+    for (let i = 0; i < 10; i++) expect(await check()).toBe('ok');
+    expect(await check()).toBe('rate');
+  });
+  it('the 10-minute window resets', async () => {
+    for (let i = 0; i < 10; i++) await check();
+    await pg.exec("update public.chat_usage set window_start = now() - interval '11 minutes'");
+    expect(await check()).toBe('ok');
+  });
+  it('40 per day even across windows', async () => {
+    await pg.exec(`insert into public.chat_usage (user_id, day, day_count, window_start, window_count) values ('${C}', current_date, 40, now(), 0)`);
+    expect(await check()).toBe('rate');
+    await pg.exec("update public.chat_usage set day = current_date - 1");
+    expect(await check()).toBe('ok'); // new day
+  });
+  it('3 strikes in 24 h lock chat for 24 h — even plain questions', async () => {
+    expect(await check(true)).toBe('strike');
+    expect(await check(true)).toBe('strike');
+    expect(await check(true)).toBe('locked');
+    expect(await check(false)).toBe('locked');
+    await pg.exec("update public.chat_usage set locked_until = now() - interval '1 minute'");
+    expect(await check(false)).toBe('ok'); // lock expires
+  });
+  it('old strikes (over 24 h) are forgotten', async () => {
+    await check(true); await check(true);
+    await pg.exec("update public.chat_usage set strikes_since = now() - interval '25 hours'");
+    expect(await check(true)).toBe('strike');
+  });
+  it('site-wide daily Gemini cap', async () => {
+    expect(await check(false, true, 2)).toBe('ok');
+    expect(await check(false, true, 2)).toBe('ok');
+    expect(await check(false, true, 2)).toBe('cap');
+    expect(await check(false, false, 2)).toBe('ok'); // non-Gemini replies still work after the cap
+  });
+  it('strikes never count towards the Gemini cap', async () => {
+    await check(true, true, 1); await check(true, true, 1);
+    expect((await pg.exec('reset role'), await pg.query('select coalesce(sum(gemini_calls),0)::int as n from public.chat_global')).rows[0].n).toBe(0);
+  });
+  it('deleting the account removes the counters', async () => {
+    await check();
+    await pg.exec(`reset role; delete from auth.users where id = '${C}'`);
+    expect((await pg.exec('reset role'), await pg.query('select count(*)::int as n from public.chat_usage')).rows[0].n).toBe(0);
   });
 });

@@ -115,6 +115,21 @@ describe('Flow 3 — a normal day', () => {
     expect(screen.getByText(/all three done/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /all done for today/i })).toHaveAttribute('href', '/app/progress');
   });
+  it('the celebration plays when the 3rd card is ticked, not when reopening a finished day', async () => {
+    await onboard();
+    for (const t of screen.getAllByRole('button', { name: /^Mark done:/ })) await click(t);
+    expect(document.querySelector('.celebrate')).not.toBeNull();
+    cleanup(); at('/app/today');
+    expect(await screen.findByText(/all three done/i)).toBeInTheDocument();
+    expect(document.querySelector('.celebrate')).toBeNull();
+  });
+  it('a diet with no match shows a friendly empty card instead of breaking', async () => {
+    const practices = (await import('../content/practices.json')).default;
+    const saved = practices.splice(0, practices.length, ...practices.filter((p) => p.module !== 'ahara'));
+    await onboard();
+    expect(screen.getByText(/nothing in this part fits your diet/i)).toBeInTheDocument();
+    practices.splice(0, practices.length, ...saved);
+  });
   it('opening a card shows its steps; the mantra card links to the hum coach', async () => {
     await onboard();
     const mantra = cards()[2];
@@ -162,7 +177,10 @@ describe('Progress and Profile (Flows 4–5)', () => {
     await onboard();
     await click(screen.getAllByRole('button', { name: /^Mark done:/ })[0]);
     await click(screen.getByRole('link', { name: 'Progress' }));
-    expect(screen.getByText('1 of 14')).toBeInTheDocument();
+    expect(screen.getByText('1 of 14 days')).toBeInTheDocument();
+    const garden = screen.getByRole('img', { name: /1 of the last 14 days practised/ });
+    expect(garden.querySelectorAll('.flower--on')).toHaveLength(1);
+    expect(garden.querySelectorAll('.flower')).toHaveLength(14);
     expect(screen.getByText(/after three hum sessions/i)).toBeInTheDocument();
   });
   it('a vegan with 5 minutes never gets a dairy or 20-minute practice', async () => {
