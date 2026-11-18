@@ -19,6 +19,10 @@ describe('Landing page', () => {
     expect(links.length).toBeGreaterThanOrEqual(2);
     links.forEach((l) => expect(l).toHaveAttribute('href', '/app'));
   });
+  it('has a "Log in" link for returning users that opens the app', () => {
+    renderLanding();
+    expect(screen.getByRole('link', { name: 'Log in' })).toHaveAttribute('href', '/app');
+  });
   it('every in-page link points at a section that exists', () => {
     const { container } = renderLanding();
     const hashes = [...container.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href').slice(1));

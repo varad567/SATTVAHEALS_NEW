@@ -20,10 +20,13 @@ beforeAll(async () => {
   await pg.exec(`
     create schema auth; create table auth.users (id uuid primary key);
     create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
-    create role authenticated; create role service_role; grant usage on schema public, auth to authenticated, service_role;
+    create role anon; create role authenticated; create role service_role; grant usage on schema public, auth to anon, authenticated, service_role;
+    -- what Supabase does by default: new functions are executable by anon + authenticated
+    alter default privileges in schema public grant execute on functions to anon, authenticated, service_role;
     grant execute on function auth.uid() to authenticated;
     insert into auth.users values ('${A}'), ('${B}');`);
   await pg.exec(readFileSync('supabase/schema.sql', 'utf8'));
+  await pg.exec(readFileSync('supabase/schema.sql', 'utf8')); // running it twice must be safe
   await pg.exec('grant select, insert, update, delete on all tables in schema public to authenticated; grant usage on all sequences in schema public to authenticated;');
   const p = { prakriti: '{"dominant":"vata"}', prefs: '{"diet":"vegan"}' };
   await as(A, `insert into public.profiles (id, name, prakriti, prefs) values ($1, 'Asha', $2, $3)`, [A, p.prakriti, p.prefs]);
@@ -90,6 +93,10 @@ describe('Chat limits (chat_check_and_count)', () => {
   };
   beforeEach(async () => { await pg.exec(`reset role; insert into auth.users values ('${C}') on conflict do nothing; delete from public.chat_usage; delete from public.chat_global;`); });
 
+  it('signed-out (anon) requests can\u2019t call it either', async () => {
+    await pg.exec("reset role; set role anon;");
+    await expect(pg.query("select public.chat_check_and_count($1, true, false, 800)", [C])).rejects.toThrow(/permission denied/);
+  });
   it('the browser can\u2019t call it or read the counters', async () => {
     await expect(as(C, "select public.chat_check_and_count($1, false, true, 800)", [C])).rejects.toThrow(/permission denied/);
     expect(await rows(C, 'chat_usage')).toEqual([]);

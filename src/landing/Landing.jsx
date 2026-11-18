@@ -31,7 +31,8 @@ export default function Landing() {
         <nav aria-label="Sections" className="lp-nav">
           <a href="#how">How it works</a><a href="#hum">Hum coach</a><a href="#faq">FAQ</a>
         </nav>
-        <Start />
+        {/* Returning users look for "Log in"; it's the same Google button as sign-up (/app → Welcome, or Today if already signed in). */}
+        <div className="lp-top__end"><Link to="/app" className="lp-login">Log in</Link><Start /></div>
       </header>
 
       <main id="top">

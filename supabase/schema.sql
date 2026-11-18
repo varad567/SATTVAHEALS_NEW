@@ -2,6 +2,7 @@
 -- PURPOSE: All tables for Sattva Heals (docs/ARCHITECTURE.md §4). Run once in Supabase → SQL Editor.
 -- Rules: every table has Row Level Security; a user can only touch their own rows.
 -- Deleting the auth user deletes all their rows (on delete cascade) — used by "Delete my data".
+-- Safe to run again (e.g. after an update): it skips or replaces what already exists.
 
 create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
@@ -50,9 +51,13 @@ alter table public.completions enable row level security;
 alter table public.hum_sessions enable row level security;
 
 -- One policy per table: own rows only, for every action.
+drop policy if exists own_profile on public.profiles;
 create policy own_profile on public.profiles for all to authenticated using (id = auth.uid()) with check (id = auth.uid());
+drop policy if exists own_checkins on public.checkins;
 create policy own_checkins on public.checkins for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists own_completions on public.completions;
 create policy own_completions on public.completions for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists own_sessions on public.hum_sessions;
 create policy own_sessions on public.hum_sessions for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
 
 create index if not exists completions_user_date on public.completions (user_id, date);
@@ -105,7 +110,9 @@ begin
   end if;
   return 'ok';
 end $$;
-revoke all on function public.chat_check_and_count(uuid, boolean, boolean, int) from public;
+-- Supabase auto-grants new functions to anon + authenticated, so revoke from them explicitly too —
+-- otherwise a signed-in user could call this with someone else's id and lock them out.
+revoke all on function public.chat_check_and_count(uuid, boolean, boolean, int) from public, anon, authenticated;
 do $$ begin
   if exists (select 1 from pg_roles where rolname = 'service_role') then
     grant execute on function public.chat_check_and_count(uuid, boolean, boolean, int) to service_role;

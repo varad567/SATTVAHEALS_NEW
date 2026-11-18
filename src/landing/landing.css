@@ -8,10 +8,15 @@
 .lp-blob { position: absolute; background: var(--lav-1); border-radius: 48% 52% 62% 38% / 44% 56% 44% 56%; z-index: -1; }
 
 .lp-progress { position: fixed; inset: 0 0 auto; height: 3px; background: var(--accent-fill); transform: scaleX(0); transform-origin: 0 50%; z-index: 20; }
-.lp-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); padding: var(--s5) 0; }
+.lp-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); white-space: nowrap; padding: var(--s5) 0; }
 .lp-top .btn { min-height: 44px; padding: 0 var(--s4); }
 .lp-logo { display: flex; align-items: center; min-height: 44px; gap: var(--s3); font-weight: 600; font-size: var(--t-md); text-decoration: none; }
 .lp-logo span { width: 24px; height: 22px; background: var(--accent-fill); border-radius: 55% 45% 60% 40%; }
+.lp-top__end { display: flex; align-items: center; gap: var(--s2); }
+.lp-login { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s2); font-size: var(--t-md); font-weight: 600; text-decoration: none; }
+.lp-login:hover { color: var(--accent); }
+/* Under 375px the bar can't fit three items; the hero's own "Start free" sits right below. */
+@media (max-width: 374px) { .lp-top .btn { display: none; } }
 .lp-nav { display: none; gap: var(--s6); font-size: var(--t-md); }
 .lp-nav a { text-decoration: none; padding: var(--s3) 0; }
 .lp-nav a:hover { color: var(--accent); }

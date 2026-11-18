@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   if (env('CHAT_ENABLED') !== 'true' || !env('GEMINI_API_KEY')) return send(res, 200, REPLIES.resting, 'resting');
   if (decision.type === 'empty' || decision.type === 'tooLong') return send(res, 400, decision.reply, decision.type);
 
-  const admin = createClient(env('VITE_SUPABASE_URL'), env('SUPABASE_SERVICE_ROLE_KEY'), { auth: { persistSession: false } });
+  const admin = createClient(env('VITE_SUPABASE_URL') || env('SUPABASE_URL'), env('SUPABASE_SERVICE_ROLE_KEY'), { auth: { persistSession: false } });
   const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   const { data: who } = token ? await admin.auth.getUser(token) : { data: null };
   if (!who?.user) return send(res, 401, REPLIES.signIn, 'signIn');

@@ -104,8 +104,8 @@ chat_global   (day date PK, gemini_calls int)
 
 | Name | Where used | Secret? |
 |---|---|---|
-| `VITE_SUPABASE_URL` | browser | no |
-| `VITE_SUPABASE_ANON_KEY` | browser | no (RLS protects data) |
+| `VITE_SUPABASE_URL` (or `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_URL`, as Vercel's Supabase integration names it) | browser + server | no |
+| `VITE_SUPABASE_ANON_KEY` (or `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `_PUBLISHABLE_KEY`) | browser | no (RLS protects data) |
 | `SUPABASE_SERVICE_ROLE_KEY` | `api/delete-account.js`, `api/chat.js` (rate-limit function only) | **yes** |
 | `GEMINI_API_KEY` | `api/chat.js` only | **yes** |
 | `GEMINI_MODEL` | `api/chat.js` | no |

@@ -20,6 +20,7 @@ export default function Welcome() {
       <button type="button" className="btn btn--wide" disabled={!adult} onClick={signIn}>
         {LOCAL_MODE ? 'Continue (preview)' : 'Continue with Google'} <span aria-hidden="true">→</span>
       </button>
+      {!LOCAL_MODE && <p className="small">{w.returning}</p>}
       <p className="small">{LOCAL_MODE && 'Preview mode: your answers are saved only in this browser. '}{w.note}</p>
     </Flow>
   );

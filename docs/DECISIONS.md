@@ -8,6 +8,13 @@
 
 ## 18 Nov 2026
 
+**D-39. Accept Vercel's Supabase integration env names** (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+`SUPABASE_URL`) as well as `VITE_*`. Why: the integration created only those names, so the live site silently ran in
+preview mode. `NEXT_PUBLIC_` is allowed into the browser bundle (vite envPrefix) — never put secrets under it.
+
+**D-40. Landing top bar has "Log in"** next to "Start free"; both go to /app (one Google button signs up or logs in).
+Under 375px the top "Start free" hides because the hero's own sits right below.
+
 **D-35. Creative layer:** hum mandala, progress garden, becoming-you reveal, celebration, bloom + haptic,
 route transitions, skeletons, sleepy night Prana. **Rejected:** per-practice line icons and decorative
 Sanskrit labels on cards (read as a generic AI template).
