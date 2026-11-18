@@ -1,0 +1,28 @@
+{
+  "doshaNames": { "vata": "Vata", "pitta": "Pitta", "kapha": "Kapha" },
+  "moods": {
+    "anxious": "feeling anxious",
+    "overthinking": "your mind is busy",
+    "irritable": "feeling irritable",
+    "stressed": "feeling stressed",
+    "low": "feeling low",
+    "sluggish": "feeling sluggish"
+  },
+  "how": {
+    "warm-touch-grounds": "warmth and touch are Ayurveda's way to ground Vata",
+    "rhythm-steadies": "a regular sleep rhythm is the steadiest daily routine there is",
+    "less-input": "less input in the evening gives a busy mind room to settle",
+    "cool-softens-heat": "cooling, gentle things are the traditional way to soften Pitta's heat",
+    "movement-lifts": "morning movement is Ayurveda's way to lift Kapha's heaviness",
+    "brisk-wakes": "brisk, dry touch wakes up a slow, heavy feeling",
+    "warm-soft-settles": "warm, soft, simple food is the traditional way to settle Vata",
+    "simple-steady": "simple, warm food is easy on a stretched day",
+    "sweet-nourishes": "a little natural sweetness and ghee are traditionally nourishing on a low day",
+    "light-warming": "light, warming food keeps Kapha from feeling heavy",
+    "hum-one-focus": "a long, slow hum gives the mind one simple thing to follow",
+    "soft-low-cools": "a soft, low hum is a gentle way to cool down",
+    "short-reset": "three rounds is a small pause you can fit anywhere",
+    "om-steady": "a long, steady Om gives the breath an even rhythm",
+    "om-lifts": "a full-voiced Om is a lively way to start the day"
+  }
+}

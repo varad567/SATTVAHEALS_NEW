@@ -6,6 +6,10 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import faq from './faq.json';
 import landing from './landing.json';
+import practices from './practices.json';
+import quiz from './quiz.json';
+import reasons from './reasons.json';
+import humTips from './humTips.json';
 
 const BANNED = /\b(treat|treats|treating|treatment|cure|cures|cured|curing|heals?|healing|diagnos\w*|therap(y|ies|eutic)|disorders?|symptoms?|patients?)\b/i;
 // A banned word is allowed only right after a negation, e.g. "does not diagnose", "not a medical service".
@@ -35,6 +39,50 @@ describe('Content shape', () => {
   });
 });
 
+describe('Practices (CORE_LOGIC §3)', () => {
+  const MOODS = ['anxious', 'overthinking', 'irritable', 'stressed', 'low', 'sluggish', 'okay'];
+  const DIETS = ['all', 'vegetarian', 'eggetarian', 'non-vegetarian', 'vegan', 'jain'];
+  it('ids are unique and each module has at least 8', () => {
+    expect(new Set(practices.map((p) => p.id)).size).toBe(practices.length);
+    for (const m of ['dinacharya', 'ahara', 'mantra']) expect(practices.filter((p) => p.module === m).length).toBeGreaterThanOrEqual(8);
+  });
+  it.each(practices.map((p) => [p.id, p]))('%s is well-formed', (_, p) => {
+    expect(p.title.length).toBeGreaterThan(3);
+    expect([5, 10, 20]).toContain(p.minutes);
+    expect(p.doshas.length).toBeGreaterThan(0); p.doshas.forEach((d) => expect(['vata', 'pitta', 'kapha']).toContain(d));
+    expect(p.moods.length).toBeGreaterThan(0); p.moods.forEach((m) => expect(MOODS).toContain(m));
+    p.diet.forEach((d) => expect(DIETS).toContain(d));
+    if (p.diet.includes('all')) expect(p.diet).toEqual(['all']);
+    expect(reasons.how[p.reasonKey], `reasonKey ${p.reasonKey}`).toBeTruthy();
+    expect(p.steps.length).toBeGreaterThanOrEqual(2); p.steps.forEach((st) => expect(st).toMatch(/[.!?]$/));
+    if (p.module === 'mantra') { expect(['bhramari', 'om']).toContain(p.humKind); expect(p.rounds).toBeGreaterThanOrEqual(3); }
+    else expect(p.humKind).toBeNull();
+    if (p.module !== 'ahara') expect(p.diet).toEqual(['all']);
+  });
+  it('Jain-tagged food never uses roots, onion, garlic, eggs, meat or honey', () => {
+    const jain = practices.filter((p) => p.module === 'ahara' && (p.diet.includes('all') || p.diet.includes('jain')));
+    const bad = /\b(ginger|onion|garlic|potato|carrot|beet|radish|egg|chicken|fish|meat|honey)\b/i;
+    expect(jain.filter((p) => bad.test(p.title + p.steps.join(' '))).map((p) => p.id)).toEqual([]);
+  });
+  it('vegan-tagged food never uses dairy, ghee, honey or eggs without an alternative', () => {
+    const vegan = practices.filter((p) => p.module === 'ahara' && (p.diet.includes('all') || p.diet.includes('vegan')));
+    const bad = /\b(milk|ghee|curd|paneer|butter|honey|egg)\b(?![^.]*\b(or|vegan)\b)/i;
+    expect(vegan.filter((p) => bad.test(p.steps.join(' '))).map((p) => p.id)).toEqual([]);
+  });
+  it('every reason key is used', () => {
+    const used = new Set(practices.map((p) => p.reasonKey));
+    expect(Object.keys(reasons.how).filter((k) => !used.has(k))).toEqual([]);
+  });
+});
+
+describe('Quiz (CORE_LOGIC §2)', () => {
+  it('12 questions, 3 options each, all distinct', () => {
+    expect(quiz).toHaveLength(12);
+    quiz.forEach((q) => { expect(q.o).toHaveLength(3); expect(new Set(q.o).size).toBe(3); expect(q.q.length).toBeGreaterThan(8); });
+    expect(new Set(quiz.map((q) => q.q)).size).toBe(12);
+  });
+});
+
 describe('Compliance wording (CONTEXT §5)', () => {
   it('rule catches claims and allows disclaimers', () => {
     expect(violations('This will cure your stress')).toEqual(['cure']);
@@ -43,8 +91,8 @@ describe('Compliance wording (CONTEXT §5)', () => {
     expect(violations('Sattva Heals is free')).toEqual([]);
     expect(violations('Prana heals you')).toEqual(['heals']);
   });
-  it('no banned words in content JSON (FAQ match keys excluded)', () => {
-    const all = [...strings(faq, ['keys']), ...strings(landing)];
+  it('no banned words in any content JSON (data keys excluded)', () => {
+    const all = [...strings(faq, ['keys']), ...strings(landing), ...strings(practices, ['id', 'reasonKey', 'humKind', 'module', 'diet', 'doshas', 'moods']), ...strings(quiz), ...strings(reasons), ...strings(humTips)];
     expect(all.flatMap(violations)).toEqual([]);
   });
   it('no banned words in JSX text anywhere in src/', () => {

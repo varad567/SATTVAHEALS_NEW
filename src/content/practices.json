@@ -1,0 +1,638 @@
+[
+  {
+    "id": "din-foot-oil",
+    "module": "dinacharya",
+    "title": "Warm oil foot massage",
+    "minutes": 5,
+    "when": "before sleep",
+    "doshas": [
+      "vata"
+    ],
+    "moods": [
+      "anxious",
+      "overthinking",
+      "stressed"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "warm-touch-grounds",
+    "humKind": null,
+    "steps": [
+      "Warm a spoon of sesame oil between your palms.",
+      "Massage each foot slowly for two minutes, soles first.",
+      "Put on socks and go to bed without your phone."
+    ]
+  },
+  {
+    "id": "din-early-bed",
+    "module": "dinacharya",
+    "title": "Lights out by 10:30",
+    "minutes": 5,
+    "when": "tonight",
+    "doshas": [
+      "vata",
+      "pitta"
+    ],
+    "moods": [
+      "anxious",
+      "overthinking",
+      "stressed",
+      "irritable"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "rhythm-steadies",
+    "humKind": null,
+    "steps": [
+      "Set a 10:00 pm reminder to start winding down.",
+      "Dim the lights and keep the room cool.",
+      "Be in bed with the lights off by 10:30."
+    ]
+  },
+  {
+    "id": "din-screen-off",
+    "module": "dinacharya",
+    "title": "A screen-free last hour",
+    "minutes": 5,
+    "when": "evening",
+    "doshas": [
+      "vata",
+      "pitta"
+    ],
+    "moods": [
+      "overthinking",
+      "anxious",
+      "irritable"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "less-input",
+    "humKind": null,
+    "steps": [
+      "Pick a time one hour before you plan to sleep.",
+      "Put your phone to charge in another room.",
+      "Read, stretch or talk instead until bed."
+    ]
+  },
+  {
+    "id": "din-cool-splash",
+    "module": "dinacharya",
+    "title": "Cool water on face and eyes",
+    "minutes": 5,
+    "when": "afternoon",
+    "doshas": [
+      "pitta"
+    ],
+    "moods": [
+      "irritable",
+      "stressed",
+      "okay"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "cool-softens-heat",
+    "humKind": null,
+    "steps": [
+      "Fill your palms with cool (not icy) water.",
+      "Splash your face and closed eyes five times.",
+      "Pat dry and take three slow breaths before going back."
+    ]
+  },
+  {
+    "id": "din-moon-walk",
+    "module": "dinacharya",
+    "title": "An easy evening walk",
+    "minutes": 20,
+    "when": "after sunset",
+    "doshas": [
+      "pitta"
+    ],
+    "moods": [
+      "irritable",
+      "stressed"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "cool-softens-heat",
+    "humKind": null,
+    "steps": [
+      "Step out after sunset, when the air is cooler.",
+      "Walk at an easy pace — no fitness goal, no headphones.",
+      "Notice five things you can see on the way back."
+    ]
+  },
+  {
+    "id": "din-sunrise-walk",
+    "module": "dinacharya",
+    "title": "Morning light walk",
+    "minutes": 20,
+    "when": "early morning",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "low",
+      "sluggish",
+      "okay"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "movement-lifts",
+    "humKind": null,
+    "steps": [
+      "Get up within 30 minutes of sunrise.",
+      "Walk briskly outside for 15–20 minutes.",
+      "Look towards the open sky, not your phone."
+    ]
+  },
+  {
+    "id": "din-surya",
+    "module": "dinacharya",
+    "title": "Five rounds of Surya Namaskar",
+    "minutes": 10,
+    "when": "morning",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "sluggish",
+      "low"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "movement-lifts",
+    "humKind": null,
+    "steps": [
+      "Stand at the front of a mat, palms together.",
+      "Flow through five slow rounds, breathing with each move.",
+      "Rest standing for a minute and notice your energy."
+    ]
+  },
+  {
+    "id": "din-dry-massage",
+    "module": "dinacharya",
+    "title": "Brisk dry hand massage",
+    "minutes": 5,
+    "when": "before bathing",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "sluggish",
+      "low"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "brisk-wakes",
+    "humKind": null,
+    "steps": [
+      "Rub your palms together until warm.",
+      "Massage arms and legs briskly, moving towards the heart.",
+      "Follow with a warm bath or shower."
+    ]
+  },
+  {
+    "id": "aha-nutmeg-milk",
+    "module": "ahara",
+    "title": "Warm milk with a pinch of nutmeg",
+    "minutes": 5,
+    "when": "evening",
+    "doshas": [
+      "vata"
+    ],
+    "moods": [
+      "anxious",
+      "overthinking"
+    ],
+    "diet": [
+      "vegetarian",
+      "eggetarian",
+      "non-vegetarian",
+      "jain"
+    ],
+    "reasonKey": "warm-soft-settles",
+    "humKind": null,
+    "steps": [
+      "Warm a cup of milk until it just steams.",
+      "Stir in a small pinch of nutmeg and a little jaggery.",
+      "Sip it slowly, away from screens."
+    ]
+  },
+  {
+    "id": "aha-khichdi",
+    "module": "ahara",
+    "title": "Simple moong dal khichdi",
+    "minutes": 20,
+    "when": "dinner",
+    "doshas": [
+      "vata",
+      "pitta"
+    ],
+    "moods": [
+      "stressed",
+      "anxious",
+      "low"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "simple-steady",
+    "humKind": null,
+    "steps": [
+      "Cook rice and split moong dal together with a pinch of turmeric.",
+      "Finish with a little ghee — or sesame oil if you're vegan.",
+      "Eat it warm, sitting down, without your phone."
+    ]
+  },
+  {
+    "id": "aha-warm-water",
+    "module": "ahara",
+    "title": "Sips of warm water through the day",
+    "minutes": 5,
+    "when": "all day",
+    "doshas": [
+      "vata",
+      "kapha"
+    ],
+    "moods": [
+      "anxious",
+      "sluggish",
+      "okay"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "warm-soft-settles",
+    "humKind": null,
+    "steps": [
+      "Fill a flask with warm water in the morning.",
+      "Take a few sips every hour instead of cold drinks.",
+      "Notice how you feel by the evening."
+    ]
+  },
+  {
+    "id": "aha-dates-ghee",
+    "module": "ahara",
+    "title": "Two dates with a little ghee",
+    "minutes": 5,
+    "when": "afternoon",
+    "doshas": [
+      "vata",
+      "pitta"
+    ],
+    "moods": [
+      "low",
+      "stressed"
+    ],
+    "diet": [
+      "vegetarian",
+      "eggetarian",
+      "non-vegetarian",
+      "jain"
+    ],
+    "reasonKey": "sweet-nourishes",
+    "humKind": null,
+    "steps": [
+      "Take two soft dates and remove the seeds.",
+      "Fill each with a few drops of ghee.",
+      "Eat them slowly as an afternoon snack."
+    ]
+  },
+  {
+    "id": "aha-coconut-water",
+    "module": "ahara",
+    "title": "Fresh coconut water",
+    "minutes": 5,
+    "when": "midday",
+    "doshas": [
+      "pitta"
+    ],
+    "moods": [
+      "irritable",
+      "stressed"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "cool-softens-heat",
+    "humKind": null,
+    "steps": [
+      "Have a glass of fresh coconut water around midday.",
+      "Drink it slowly in the shade, not on the go.",
+      "Skip spicy and fried snacks for the rest of the afternoon."
+    ]
+  },
+  {
+    "id": "aha-coriander-water",
+    "module": "ahara",
+    "title": "Coriander-seed cooling water",
+    "minutes": 5,
+    "when": "morning",
+    "doshas": [
+      "pitta"
+    ],
+    "moods": [
+      "irritable",
+      "okay"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "cool-softens-heat",
+    "humKind": null,
+    "steps": [
+      "Soak a teaspoon of coriander seeds in a glass of water overnight.",
+      "Strain it in the morning.",
+      "Sip it at room temperature."
+    ]
+  },
+  {
+    "id": "aha-ginger-tea",
+    "module": "ahara",
+    "title": "Fresh ginger tea",
+    "minutes": 5,
+    "when": "morning",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "sluggish",
+      "low"
+    ],
+    "diet": [
+      "vegetarian",
+      "eggetarian",
+      "non-vegetarian",
+      "vegan"
+    ],
+    "reasonKey": "light-warming",
+    "humKind": null,
+    "steps": [
+      "Boil a few thin slices of fresh ginger in a cup of water for five minutes.",
+      "Add a squeeze of lemon and a little honey or jaggery once it cools slightly.",
+      "Drink it warm, before breakfast."
+    ]
+  },
+  {
+    "id": "aha-light-dinner",
+    "module": "ahara",
+    "title": "An early, light dinner",
+    "minutes": 20,
+    "when": "by 7:30 pm",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "sluggish",
+      "low",
+      "okay"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "light-warming",
+    "humKind": null,
+    "steps": [
+      "Plan a light dinner — soup, dal or steamed vegetables.",
+      "Finish eating by 7:30 pm.",
+      "Take a short walk after the meal."
+    ]
+  },
+  {
+    "id": "aha-lemon-pepper",
+    "module": "ahara",
+    "title": "Warm lemon water with black pepper",
+    "minutes": 5,
+    "when": "on waking",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "sluggish",
+      "low"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "light-warming",
+    "humKind": null,
+    "steps": [
+      "Warm a glass of water until it's pleasantly hot.",
+      "Squeeze in half a lemon and add a small pinch of black pepper.",
+      "Sip it slowly before breakfast."
+    ]
+  },
+  {
+    "id": "man-bhramari-6",
+    "module": "mantra",
+    "title": "Bhramari — 6 rounds of humming",
+    "minutes": 5,
+    "when": "any time",
+    "doshas": [
+      "vata",
+      "pitta"
+    ],
+    "moods": [
+      "anxious",
+      "overthinking",
+      "stressed"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "hum-one-focus",
+    "humKind": "bhramari",
+    "rounds": 6,
+    "steps": [
+      "Sit tall, close your eyes and relax your jaw.",
+      "Breathe in slowly through your nose.",
+      "Hum softly like a bee as you breathe out. Prana will listen and guide you."
+    ]
+  },
+  {
+    "id": "man-bhramari-9",
+    "module": "mantra",
+    "title": "Bhramari — 9 longer rounds",
+    "minutes": 10,
+    "when": "evening",
+    "doshas": [
+      "vata",
+      "pitta"
+    ],
+    "moods": [
+      "overthinking",
+      "anxious"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "hum-one-focus",
+    "humKind": "bhramari",
+    "rounds": 9,
+    "steps": [
+      "Sit comfortably in a quiet room.",
+      "Gently close your ears with your thumbs if you like.",
+      "Hum low and slow for nine rounds while Prana listens."
+    ]
+  },
+  {
+    "id": "man-bhramari-soft",
+    "module": "mantra",
+    "title": "Soft, low Bhramari",
+    "minutes": 5,
+    "when": "afternoon",
+    "doshas": [
+      "pitta"
+    ],
+    "moods": [
+      "irritable",
+      "stressed"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "soft-low-cools",
+    "humKind": "bhramari",
+    "rounds": 6,
+    "steps": [
+      "Sit somewhere cool and shaded.",
+      "Keep the hum very soft and low — barely louder than a breath.",
+      "Let each exhale be longer than the one before."
+    ]
+  },
+  {
+    "id": "man-bhramari-3",
+    "module": "mantra",
+    "title": "Three-round Bhramari reset",
+    "minutes": 5,
+    "when": "whenever you need it",
+    "doshas": [
+      "vata",
+      "pitta",
+      "kapha"
+    ],
+    "moods": [
+      "stressed",
+      "okay"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "short-reset",
+    "humKind": "bhramari",
+    "rounds": 3,
+    "steps": [
+      "Pause what you're doing and sit up.",
+      "Take one slow breath in through your nose.",
+      "Hum three gentle rounds with Prana."
+    ]
+  },
+  {
+    "id": "man-om-6",
+    "module": "mantra",
+    "title": "Om — 6 rounds",
+    "minutes": 5,
+    "when": "morning",
+    "doshas": [
+      "kapha",
+      "vata"
+    ],
+    "moods": [
+      "low",
+      "okay"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "om-steady",
+    "humKind": "om",
+    "rounds": 6,
+    "steps": [
+      "Sit tall with your hands resting on your knees.",
+      "Breathe in fully through your nose.",
+      "Chant a long Om — 'Aaa-ooo-mmm' — as you breathe out."
+    ]
+  },
+  {
+    "id": "man-om-12",
+    "module": "mantra",
+    "title": "Om — 12 rounds",
+    "minutes": 10,
+    "when": "morning",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "low",
+      "sluggish"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "om-lifts",
+    "humKind": "om",
+    "rounds": 12,
+    "steps": [
+      "Sit by a window or in morning light.",
+      "Chant twelve rounds of Om at a comfortable volume.",
+      "Sit quietly for a minute when you finish."
+    ]
+  },
+  {
+    "id": "man-om-bright",
+    "module": "mantra",
+    "title": "Bright morning Om",
+    "minutes": 5,
+    "when": "on waking",
+    "doshas": [
+      "kapha"
+    ],
+    "moods": [
+      "sluggish"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "om-lifts",
+    "humKind": "om",
+    "rounds": 6,
+    "steps": [
+      "Stand or sit up straight right after waking.",
+      "Chant Om with a slightly fuller, brighter voice.",
+      "Do six rounds, then open a window."
+    ]
+  },
+  {
+    "id": "man-om-evening",
+    "module": "mantra",
+    "title": "Slow evening Om",
+    "minutes": 5,
+    "when": "evening",
+    "doshas": [
+      "vata"
+    ],
+    "moods": [
+      "anxious",
+      "overthinking"
+    ],
+    "diet": [
+      "all"
+    ],
+    "reasonKey": "om-steady",
+    "humKind": "om",
+    "rounds": 6,
+    "steps": [
+      "Sit somewhere quiet with the lights low.",
+      "Chant Om slowly, letting the 'mmm' last longest.",
+      "Six rounds, then rest in the silence."
+    ]
+  }
+]

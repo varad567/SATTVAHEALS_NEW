@@ -1,0 +1,14 @@
+[
+  { "q": "Your body frame is…", "o": ["Slim and light — I find it hard to gain weight", "Medium and athletic", "Broad and sturdy — I gain weight easily"] },
+  { "q": "Your appetite is usually…", "o": ["Irregular — I sometimes forget to eat", "Strong — I get cranky if I miss a meal", "Steady — I can skip a meal easily"] },
+  { "q": "Your sleep tends to be…", "o": ["Light — I wake up easily", "Moderate — I often wake up warm", "Deep and long — I find it hard to get up"] },
+  { "q": "When a busy day piles up, your mind usually…", "o": ["Races ahead and worries about what's next", "Sharpens, but gets impatient", "Slows down and wants to put things off"] },
+  { "q": "The weather you like least is…", "o": ["Cold and windy", "Hot and humid", "Cold and damp"] },
+  { "q": "You usually speak…", "o": ["Fast, jumping between topics", "Clearly and to the point", "Slowly and calmly"] },
+  { "q": "Your energy through the day comes…", "o": ["In bursts, then I crash", "Strong and focused", "Steady, but slow to get going"] },
+  { "q": "Your skin tends to be…", "o": ["Dry, especially in winter", "Warm, and flushes easily", "Smooth and slightly oily"] },
+  { "q": "When you learn something new, you…", "o": ["Pick it up fast and forget fast", "Learn sharply and remember well", "Learn slowly but never forget"] },
+  { "q": "With money, you tend to…", "o": ["Spend on impulse", "Spend on quality, with a plan", "Save carefully"] },
+  { "q": "When things go wrong, you first feel…", "o": ["Anxious or uneasy", "Irritated or angry", "Withdrawn or heavy"] },
+  { "q": "You usually move…", "o": ["Quickly, a little restless", "With purpose", "Slowly and gracefully"] }
+]

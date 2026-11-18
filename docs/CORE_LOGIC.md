@@ -23,20 +23,22 @@ history = [{ date, practiceId, module }]                  // last 7 days of comp
 order **Vata, Pitta, Kapha**. Each answer adds 1 point to that dosha.
 
 **2.2** Percentages: `round(points / 12 × 100)`. Fix rounding so the three always add to 100
-(add or subtract the difference on the largest value).
+without changing who leads: a **missing** point goes to the largest share, an **extra** point comes
+off the smallest. (Example: 5/5/2 answers → 42/42/16, not 41/42/17 — found by the exhaustive test.)
 
 **2.3** `dominant` = the highest score. Tie → order Vata > Pitta > Kapha (Vata is the most
 easily disturbed, so it is the safest to support first).
 
-**2.4** `label`: if the second-highest is within **10 points** of the top → dual type
-(`"Vata · Pitta"`), otherwise single (`"Vata"`).
+**2.4** `label`: if all three are within **10 points** → `"Tridosha · balanced"`; else if the
+second-highest is within 10 points of the top → dual type (`"Vata · Pitta"`, highest first);
+otherwise single (`"Vata"`).
 
 **2.5** A half-finished quiz is saved in `localStorage` (key `sh.quiz.draft`) and resumed at
 the last unanswered question (Flow 2).
 
 ## 3. Practice data format — `src/content/practices.json`
 
-24 practices: 8 dinacharya, 8 ahara, 8 mantra.
+25 practices: 8 dinacharya, 9 ahara, 8 mantra (ahara has one extra so every diet has a quick option for every dosha).
 
 ```json
 {
@@ -74,10 +76,12 @@ the last unanswered question (Flow 2).
 | low | kapha |
 | sluggish | kapha |
 | okay | the user's `dominant` |
+| anything else / missing | treated exactly as **okay** |
 
 **4.2 Filter** each module's practices:
 - `minutes ≤ prefs.minutes` (if nothing passes, ignore this filter for that module)
-- diet matches (`"all"` or includes `prefs.diet`)
+- diet matches (`"all"` or includes `prefs.diet`) — **never relaxed**; if nothing fits, that
+  card is `null` and the screen says so
 
 **4.3 Score** each remaining practice:
 
@@ -89,6 +93,8 @@ the last unanswered question (Flow 2).
 | Done yesterday | −5 |
 | Done in the last 7 days (not yesterday) | −1 |
 
+Only the most recent time counts. Today and future dates are ignored.
+
 **4.4 Pick** the highest score per module. Tie → alphabetical by `id`. Fully deterministic, so
 the same day always gives the same plan.
 
@@ -99,15 +105,17 @@ card is **not done** today (Flows 3 and 5).
 
 ## 5. "Why this for you" — `buildReason.js`
 
-One sentence, built from two parts in `src/content/reasons.json`:
+One sentence: `"{who} — {how}{fits}."` built from `src/content/reasons.json`.
 
-```
-"{who}, {how}."
-who  = "you're {Dominant}-dominant and feeling {mood}"   // or "you're {Dominant}-dominant" when okay
-how  = reasons[reasonKey]                                   // e.g. "warmth and touch are Ayurveda's way to ground Vata"
-```
+| Case | `who` |
+|---|---|
+| practice suits the Prakriti, mood given | "You're Vata-dominant and your mind is busy" |
+| practice suits the Prakriti, mood okay | "You're Vata-dominant" |
+| picked for today's mood only | "You're feeling irritable today" |
+| mood okay, practice outside the Prakriti | "It keeps your Kapha side balanced" |
 
-Ahara cards append `" — and it fits your {diet} diet"`. Never hard-code reasons in components.
+`how` = `reasons.how[reasonKey]`. Ahara cards add `fits` = " — and it fits your {diet} diet".
+Never hard-code reasons in components.
 
 ## 6. Hum coach — `src/engine/hum/`
 
