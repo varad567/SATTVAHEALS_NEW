@@ -8,6 +8,14 @@
 
 ## 18 Nov 2026
 
+**D-29. The app runs on a local stand-in until Supabase is connected.** `lib/db.js` and
+`lib/auth.js` save to the browser and expose the exact async functions the Supabase version will
+have, so connecting Supabase (M2c) changes only those two files. The welcome screen says
+"Preview mode" so nobody mistakes it for real accounts.
+
+**D-30. Name is asked during onboarding** ("What should Prana call you?") and editable in Profile,
+so the greeting works with or without Google profile data.
+
 **D-27. The chat API is locked down** (CORE_LOGIC §7.0): origin check, sign-in required for
 Gemini, per-user and site-wide limits stored in Supabase, strikes and 24 h lock-out, misuse and
 topic gates before Gemini, short outputs. Why: stop people using Prana as a free general AI

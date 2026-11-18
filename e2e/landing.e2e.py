@@ -80,12 +80,12 @@ with sync_playwright() as p:
     check(not page.locator(".lp-faq details").first.evaluate("d => d.open"), "FAQ closes on second click")
     # Start free navigates client-side to /app
     page.locator(".lp-top .btn").click(); page.wait_for_url("**/app")
-    check(page.locator("h1").inner_text() == "The app", "Start free opens /app")
+    check("Feel more settled" in page.locator("h1").inner_text(), "Start free opens the app welcome")
     page.go_back(); page.wait_for_url(BASE + "/")
     check(page.locator("h1").count() == 1, "browser Back returns to landing")
     # deep links / refresh on SPA routes
-    for path, text in [("/app/today", "The app"), ("/privacy", "Privacy policy"), ("/random-page", "Page not found")]:
-        page.goto(BASE + path, wait_until="networkidle"); check(page.locator("h1").inner_text() == text, f"direct load {path}")
+    for path, text in [("/app/today", "Feel more settled"), ("/privacy", "Privacy policy"), ("/random-page", "Page not found")]:
+        page.goto(BASE + path, wait_until="networkidle"); check(text in page.locator("h1").inner_text(), f"direct load {path}")
     # no-JS-motion fallback: GSAP blocked entirely still shows full content
     ctx.close()
     ctx = browser.new_context(viewport={"width": 390, "height": 780}, java_script_enabled=True); page = ctx.new_page()

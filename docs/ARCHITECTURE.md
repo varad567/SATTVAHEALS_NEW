@@ -128,6 +128,6 @@ Secrets never get the `VITE_` prefix (that would ship them to the browser).
 | Command | What it checks |
 |---|---|
 | `npm test` | Unit tests (Vitest): components, routes, content rules (shape, Jain/vegan ingredients, compliance words), and the engine — every one of the 531,441 quiz answer sets, all 315 user scenarios for Today's 3, 7-day variety, and no dead content |
-| `npm run test:e2e` | Real Chrome at 320 / 390 / 768 / 1024 / 1280 / 1920 px: no sideways scroll, nothing cut off, no console errors, tap targets ≥ 44px on phones, axe WCAG 2.1 AA, reduced-motion rendering, keyboard focus, scroll story, FAQ, routes and deep links. Saves screenshots to `e2e/shots/` — look at them; some bugs only show by eye. |
+| `npm run test:e2e` | Landing: real Chrome at 320 / 390 / 768 / 1024 / 1280 / 1920 px. App: the whole journey (welcome → quiz → prefs → reveal → check-in → Today → support → progress → profile → delete) at 390 and 1280 px. Both check: no sideways scroll, nothing cut off, no console errors, tap targets ≥ 44px on phones, axe WCAG 2.1 AA, reduced-motion rendering, keyboard focus, scroll story, FAQ, routes and deep links. Saves screenshots to `e2e/shots/` — look at them; some bugs only show by eye. |
 
 When a bug is found by eye, add a check for it to the e2e file so it can't return.

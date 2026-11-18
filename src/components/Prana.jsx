@@ -13,6 +13,12 @@ import './prana.css';
 export const DOSHA_COLORS = { vata: '#C4B1D8', pitta: '#EAA459', kapha: '#765387' };
 const ALL = [DOSHA_COLORS.pitta, DOSHA_COLORS.kapha, DOSHA_COLORS.vata];
 
+/** Prana in the user's own colours: highest share in front, 2nd top, 3rd bottom. scores = { vata, pitta, kapha } */
+export function colorsFor(scores) {
+  const [first, second, third] = ['vata', 'pitta', 'kapha'].sort((a, b) => scores[b] - scores[a]);
+  return [DOSHA_COLORS[second], DOSHA_COLORS[third], DOSHA_COLORS[first]];
+}
+
 export default function Prana({ size, colors = ALL, mood = 'idle', popKey = 0 }) {
   const [top, bottom, front] = colors;
   return (

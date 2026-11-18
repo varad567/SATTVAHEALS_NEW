@@ -33,7 +33,6 @@ a { color: inherit; }
 .btn--ghost:hover { background: var(--lav-1); box-shadow: none; }
 .btn--gold { background: var(--gold); color: var(--plum); }
 .btn--gold:hover { background: #f0b676; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
